@@ -28,9 +28,9 @@ public class UnitTestHelper
     {
         Users = new User[]
         {
-            new() {UserName = "JohnDoe222", Id = "1"},
-            new() {UserName = "Tymash33", Id = "2"},
-            new() {UserName = "Julia102", Id = "3"}
+            new() {UserName = "JohnDoe222", Name = "John", Surname = "Doe", Id = "1"},
+            new() {UserName = "Tymash33", Name = "Tymofii", Surname = "Karakash", Id = "2"},
+            new() {UserName = "Julia102", Name = "Julia", Surname = "Holovko", Id = "3"}
         };
 
         Folders = new Folder[]

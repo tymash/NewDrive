@@ -69,7 +69,9 @@ public class UsersRepositoryTests
         var user = new User
         {
             Id = "4",
-            UserName = "Mark405"
+            UserName = "Mark405",
+            Name = "Mark",
+            Surname = "Johnson"
         };
 
         await _usersRepository.AddAsync(user);
@@ -117,6 +119,8 @@ public class UsersRepositoryTests
         var user = _unitTestHelper.Users[0];
 
         user.UserName = "JackWhite777";
+        user.Name = "Jack";
+        user.Surname = "White";
 
         _usersRepository.Update(user);
 

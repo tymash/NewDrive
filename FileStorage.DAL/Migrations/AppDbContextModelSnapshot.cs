@@ -36,6 +36,10 @@ namespace FileStorage.DAL.Migrations
                     b.Property<bool>("IsPrimaryFolder")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -44,7 +48,7 @@ namespace FileStorage.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Folder");
+                    b.ToTable("Folders");
                 });
 
             modelBuilder.Entity("FileStorage.DAL.Entities.StorageItem", b =>
@@ -57,11 +61,6 @@ namespace FileStorage.DAL.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Extension")
                         .IsRequired()
@@ -78,6 +77,11 @@ namespace FileStorage.DAL.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
                     b.Property<int>("ParentFolderId")
                         .HasColumnType("int");
 
@@ -88,11 +92,6 @@ namespace FileStorage.DAL.Migrations
 
                     b.Property<long>("Size")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("TrustedName")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
 
                     b.HasKey("Id");
 
@@ -126,6 +125,11 @@ namespace FileStorage.DAL.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -146,6 +150,11 @@ namespace FileStorage.DAL.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -164,28 +173,6 @@ namespace FileStorage.DAL.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("FileStorage.DAL.Entities.UserAccount", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserAccounts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -337,21 +324,10 @@ namespace FileStorage.DAL.Migrations
                     b.HasOne("FileStorage.DAL.Entities.Folder", "ParentFolder")
                         .WithMany("StorageItems")
                         .HasForeignKey("ParentFolderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ParentFolder");
-                });
-
-            modelBuilder.Entity("FileStorage.DAL.Entities.UserAccount", b =>
-                {
-                    b.HasOne("FileStorage.DAL.Entities.User", "User")
-                        .WithMany("UserAccounts")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("ParentFolder");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -413,8 +389,6 @@ namespace FileStorage.DAL.Migrations
             modelBuilder.Entity("FileStorage.DAL.Entities.User", b =>
                 {
                     b.Navigation("Folders");
-
-                    b.Navigation("UserAccounts");
                 });
 #pragma warning restore 612, 618
         }
