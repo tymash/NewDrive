@@ -44,14 +44,14 @@ public class UnitTestHelper
 
         StorageItems = new StorageItem[]
         {
-            new() {Id = 1, ParentFolderId = 1, Name = "File1", RelativePath = "MyStorage/", Extension = "txt"},
-            new() {Id = 2, ParentFolderId = 2, Name = "File2", RelativePath = "MyStorage/Folder1/", Extension = "pdf"},
-            new() {Id = 3, ParentFolderId = 2, Name = "File3", RelativePath = "MyStorage/Folder1/", Extension = "docx"},
-            new() {Id = 4, ParentFolderId = 3, Name = "File4", RelativePath = "MyStorage/", Extension = "txt"},
-            new() {Id = 5, ParentFolderId = 3, Name = "File5", RelativePath = "MyStorage/", Extension = "txt"},
-            new() {Id = 6, ParentFolderId = 4, Name = "File6", RelativePath = "MyStorage/Folder2/", Extension = "pdf"},
-            new() {Id = 7, ParentFolderId = 4, Name = "File7", RelativePath = "MyStorage/Folder2/", Extension = "pdf"},
-            new() {Id = 8, ParentFolderId = 5, Name = "File8", RelativePath = "MyStorage/Folder3/", Extension = "pdf"}
+            new() {Id = 1, ParentFolderId = 1, UserId = "1", Name = "File1", RelativePath = "MyStorage/", Extension = "txt"},
+            new() {Id = 2, ParentFolderId = 2, UserId = "1", Name = "File2", RelativePath = "MyStorage/Folder1/", Extension = "pdf"},
+            new() {Id = 3, ParentFolderId = 2, UserId = "1", Name = "File3", RelativePath = "MyStorage/Folder1/", Extension = "docx"},
+            new() {Id = 4, ParentFolderId = 3, UserId = "2", Name = "File4", RelativePath = "MyStorage/", Extension = "txt"},
+            new() {Id = 5, ParentFolderId = 3, UserId = "2", Name = "File5", RelativePath = "MyStorage/", Extension = "txt"},
+            new() {Id = 6, ParentFolderId = 4, UserId = "2", Name = "File6", RelativePath = "MyStorage/Folder2/", Extension = "pdf"},
+            new() {Id = 7, ParentFolderId = 4, UserId = "2", Name = "File7", RelativePath = "MyStorage/Folder2/", Extension = "pdf"},
+            new() {Id = 8, ParentFolderId = 5, UserId = "3", Name = "File8", RelativePath = "MyStorage/Folder3/", Extension = "pdf"}
         };
 
        

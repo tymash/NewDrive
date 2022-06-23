@@ -31,5 +31,8 @@ public class StorageItemConfiguration : IEntityTypeConfiguration<StorageItem>
             .WithMany(folder => folder.StorageItems)
             .HasForeignKey(storageItem => storageItem.ParentFolderId);
 
+        builder.HasOne(storageItem => storageItem.User)
+            .WithMany(user => user.StorageItems)
+            .HasForeignKey(storageItem => storageItem.UserId);
     }
 }

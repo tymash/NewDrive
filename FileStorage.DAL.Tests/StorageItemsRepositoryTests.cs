@@ -69,6 +69,7 @@ public class StorageItemsRepositoryTests
         {
             Id = 9, 
             ParentFolderId = 5, 
+            UserId = "3",
             Name = "File9",
             RelativePath = "MyStorage/Folder3/",
             Extension = "mp3"

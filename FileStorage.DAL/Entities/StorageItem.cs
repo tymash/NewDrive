@@ -10,6 +10,9 @@ public class StorageItem : BaseEntity
     public bool IsPublic { get; set; }
     public string RelativePath { get; set; }
     
+    
+    public string UserId { get; set; }
+    public User User { get; set; }
     public int ParentFolderId { get; set; }
     public Folder ParentFolder { get; set; }
 }
