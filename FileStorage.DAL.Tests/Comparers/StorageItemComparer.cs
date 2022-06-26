@@ -6,20 +6,23 @@ namespace FileStorage.DAL.Tests.Comparers;
 
 public class StorageItemComparer : IEqualityComparer<StorageItem>
 {
-    public bool Equals(StorageItem storageItem1, StorageItem storageItem2)
+    public bool Equals(StorageItem x, StorageItem y)
     {
-        if (ReferenceEquals(storageItem1, storageItem2)) return true;
-        if (ReferenceEquals(storageItem1, null)) return false;
-        if (ReferenceEquals(storageItem2, null)) return false;
-        if (storageItem1.GetType() != storageItem2.GetType()) return false;
-        return storageItem1.CreatedOn.Equals(storageItem2.CreatedOn) && 
-               storageItem1.Extension == storageItem2.Extension && 
-               storageItem1.Name == storageItem2.Name && 
-               storageItem1.Size == storageItem2.Size && 
-               storageItem1.IsRecycled == storageItem2.IsRecycled && 
-               storageItem1.IsPublic == storageItem2.IsPublic && 
-               storageItem1.RelativePath == storageItem2.RelativePath && 
-               storageItem1.ParentFolderId == storageItem2.ParentFolderId;
+        if (ReferenceEquals(x, y)) return true;
+        if (ReferenceEquals(x, null)) return false;
+        if (ReferenceEquals(y, null)) return false;
+        if (x.GetType() != y.GetType()) return false;
+        return x.CreatedOn.Equals(y.CreatedOn) 
+               && x.Extension == y.Extension 
+               && x.Name == y.Name 
+               && x.Size == y.Size 
+               && x.IsRecycled == y.IsRecycled 
+               && x.IsPublic == y.IsPublic 
+               && x.RelativePath == y.RelativePath 
+               && x.UserId == y.UserId 
+               && x.User.Equals(y.User) 
+               && x.ParentFolderId == y.ParentFolderId 
+               && x.ParentFolder.Equals(y.ParentFolder);
     }
 
     public int GetHashCode(StorageItem obj)
@@ -32,7 +35,10 @@ public class StorageItemComparer : IEqualityComparer<StorageItem>
         hashCode.Add(obj.IsRecycled);
         hashCode.Add(obj.IsPublic);
         hashCode.Add(obj.RelativePath);
+        hashCode.Add(obj.UserId);
+        hashCode.Add(obj.User);
         hashCode.Add(obj.ParentFolderId);
+        hashCode.Add(obj.ParentFolder);
         return hashCode.ToHashCode();
     }
 }
