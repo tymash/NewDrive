@@ -1,6 +1,6 @@
-namespace FileStorage.BLL.Models;
+namespace FileStorage.BLL.Models.UserModels;
 
-public class UserModel
+public class UserViewModel
 {
     public string Id { get; set; }
     public string Email { get; set; }
@@ -11,4 +11,5 @@ public class UserModel
     
     public ICollection<int> FoldersIds { get; set; }
     public ICollection<int> StorageItemsIds { get; set; }
+    public string Token { get; set; }
 }
