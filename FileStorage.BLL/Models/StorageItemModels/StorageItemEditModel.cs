@@ -1,7 +1,11 @@
-namespace FileStorage.DAL.Entities;
+namespace FileStorage.BLL.Models.StorageItemModels;
 
-public class StorageItem : BaseEntity
+public class StorageItemEditModel
 {
+    public int Id { get; set; }
+    public int ParentFolderId { get; set; }
+    public string UserId { get; set; }
+    
     public DateTime CreatedOn { get; set; }
     public string Extension { get; set; }
     public string Name { get; set; }
@@ -9,10 +13,4 @@ public class StorageItem : BaseEntity
     public bool IsRecycled { get; set; }
     public bool IsPublic { get; set; }
     public string RelativePath { get; set; }
-    
-    
-    public string UserId { get; set; }
-    public virtual User User { get; set; }
-    public int ParentFolderId { get; set; }
-    public virtual Folder ParentFolder { get; set; }
 }

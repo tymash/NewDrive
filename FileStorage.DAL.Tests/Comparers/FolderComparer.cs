@@ -6,19 +6,23 @@ namespace FileStorage.DAL.Tests.Comparers;
 
 public class FolderComparer : IEqualityComparer<Folder>
 {
-    public bool Equals(Folder folder1, Folder folder2)
+    public bool Equals(Folder x, Folder y)
     {
-        if (ReferenceEquals(folder1, folder2)) return true;
-        if (ReferenceEquals(folder1, null)) return false;
-        if (ReferenceEquals(folder2, null)) return false;
-        if (folder1.GetType() != folder2.GetType()) return false;
-        return folder1.UserId == folder2.UserId &&
-               folder1.IsPrimaryFolder == folder2.IsPrimaryFolder && folder1.Name == folder2.Name &&
-               folder1.CreatedOn.Equals(folder2.CreatedOn) && folder1.StorageItems.Equals(folder2.StorageItems);
+        if (ReferenceEquals(x, y)) return true;
+        if (ReferenceEquals(x, null)) return false;
+        if (ReferenceEquals(y, null)) return false;
+        if (x.GetType() != y.GetType()) return false;
+        return x.UserId == y.UserId 
+               && x.User.Equals(y.User) 
+               && x.IsPrimaryFolder == y.IsPrimaryFolder 
+               && x.Name == y.Name 
+               && x.CreatedOn.Equals(y.CreatedOn) 
+               && x.RelativePath == y.RelativePath 
+               && x.StorageItems.Equals(y.StorageItems);
     }
 
     public int GetHashCode(Folder obj)
     {
-        return HashCode.Combine(obj.UserId, obj.IsPrimaryFolder, obj.Name, obj.CreatedOn, obj.StorageItems);
+        return HashCode.Combine(obj.UserId, obj.User, obj.IsPrimaryFolder, obj.Name, obj.CreatedOn, obj.RelativePath, obj.StorageItems);
     }
 }

@@ -28,6 +28,8 @@ namespace FileStorage.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Surname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -155,40 +157,22 @@ namespace FileStorage.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Folder",
+                name: "Folders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsPrimaryFolder = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RelativePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Folder", x => x.Id);
+                    table.PrimaryKey("PK_Folders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Folder_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserAccounts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserAccounts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserAccounts_AspNetUsers_UserId",
+                        name: "FK_Folders_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -202,24 +186,28 @@ namespace FileStorage.DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TrustedName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     Extension = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    DisplayName = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Size = table.Column<long>(type: "bigint", nullable: false),
                     IsRecycled = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     RelativePath = table.Column<string>(type: "nvarchar(900)", maxLength: 900, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ParentFolderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_StorageItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StorageItems_Folder_ParentFolderId",
+                        name: "FK_StorageItems_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_StorageItems_Folders_ParentFolderId",
                         column: x => x.ParentFolderId,
-                        principalTable: "Folder",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalTable: "Folders",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -262,8 +250,8 @@ namespace FileStorage.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Folder_UserId",
-                table: "Folder",
+                name: "IX_Folders_UserId",
+                table: "Folders",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -272,8 +260,8 @@ namespace FileStorage.DAL.Migrations
                 column: "ParentFolderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserAccounts_UserId",
-                table: "UserAccounts",
+                name: "IX_StorageItems_UserId",
+                table: "StorageItems",
                 column: "UserId");
         }
 
@@ -298,13 +286,10 @@ namespace FileStorage.DAL.Migrations
                 name: "StorageItems");
 
             migrationBuilder.DropTable(
-                name: "UserAccounts");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Folder");
+                name: "Folders");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

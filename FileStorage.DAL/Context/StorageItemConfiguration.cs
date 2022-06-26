@@ -11,7 +11,7 @@ public class StorageItemConfiguration : IEntityTypeConfiguration<StorageItem>
         builder.HasKey(storageItem => storageItem.Id);
 
         builder.Property(storageItem => storageItem.Name)
-            .HasMaxLength(300)
+            .HasMaxLength(100)
             .IsRequired();
 
         builder.Property(storageItem => storageItem.IsRecycled)
@@ -26,10 +26,19 @@ public class StorageItemConfiguration : IEntityTypeConfiguration<StorageItem>
         builder.Property(storageItem => storageItem.RelativePath)
             .HasMaxLength(900)
             .IsRequired();
+        
+        builder.Property(storageItem => storageItem.CreatedOn)
+            .IsRequired()
+            .HasDefaultValue(DateTime.Now);
 
         builder.HasOne(storageItem => storageItem.ParentFolder)
             .WithMany(folder => folder.StorageItems)
-            .HasForeignKey(storageItem => storageItem.ParentFolderId);
+            .HasForeignKey(storageItem => storageItem.ParentFolderId)
+            .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne(storageItem => storageItem.User)
+            .WithMany(user => user.StorageItems)
+            .HasForeignKey(storageItem => storageItem.UserId)
+            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

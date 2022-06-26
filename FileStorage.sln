@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.DAL", "FileStor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.DAL.Tests", "FileStorage.DAL.Tests\FileStorage.DAL.Tests.csproj", "{72EF787A-1F5D-4007-A30D-74EBC569B590}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.BLL", "FileStorage.BLL\FileStorage.BLL.csproj", "{BB912EA5-7CB7-4A55-B7E2-02EA22E6E9BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{72EF787A-1F5D-4007-A30D-74EBC569B590}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72EF787A-1F5D-4007-A30D-74EBC569B590}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72EF787A-1F5D-4007-A30D-74EBC569B590}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB912EA5-7CB7-4A55-B7E2-02EA22E6E9BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB912EA5-7CB7-4A55-B7E2-02EA22E6E9BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB912EA5-7CB7-4A55-B7E2-02EA22E6E9BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB912EA5-7CB7-4A55-B7E2-02EA22E6E9BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
