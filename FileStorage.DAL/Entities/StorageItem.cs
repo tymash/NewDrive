@@ -12,7 +12,7 @@ public class StorageItem : BaseEntity
     
     
     public string UserId { get; set; }
-    public User User { get; set; }
+    public virtual User User { get; set; }
     public int ParentFolderId { get; set; }
-    public Folder ParentFolder { get; set; }
+    public virtual Folder ParentFolder { get; set; }
 }
