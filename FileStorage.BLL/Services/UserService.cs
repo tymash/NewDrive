@@ -1,6 +1,10 @@
 using AutoMapper;
 using FileStorage.BLL.Models;
+using FileStorage.BLL.Models.FolderModels;
+using FileStorage.BLL.Models.StorageItemModels;
+using FileStorage.BLL.Models.UserModels;
 using FileStorage.BLL.Services.Interfaces;
+using FileStorage.BLL.Tokens;
 using FileStorage.BLL.Validation;
 using FileStorage.DAL.Entities;
 using FileStorage.DAL.UnitOfWork;
@@ -14,48 +18,36 @@ public class UserService : IUserService
     private readonly IMapper _mapperProfile;
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly ITokenGenerator _tokenGenerator;
 
-    public UserService(IUnitOfWork unitOfWork, IMapper mapperProfile, UserManager<User> userManager, SignInManager<User> signInManager)
+    public UserService(IUnitOfWork unitOfWork, IMapper mapperProfile, UserManager<User> userManager, SignInManager<User> signInManager, ITokenGenerator tokenGenerator)
     {
         _unitOfWork = unitOfWork;
         _mapperProfile = mapperProfile;
         _userManager = userManager;
         _signInManager = signInManager;
+        _tokenGenerator = tokenGenerator;
     }
     
-    public async Task<IEnumerable<UserModel>> GetAllAsync()
+    public async Task<IEnumerable<UserViewModel>> GetAllAsync()
     {
         var users = await _unitOfWork.UsersRepository.GetAllAsync();
-        return _mapperProfile.Map<IEnumerable<UserModel>>(users);
+        return _mapperProfile.Map<IEnumerable<UserViewModel>>(users);
     }
 
-    public async Task<UserModel> GetByIdAsync(string userId)
+    public async Task<UserViewModel> GetByIdAsync(string id)
     {
-        var user = await _unitOfWork.UsersRepository.GetByIdAsync(userId);
-        return _mapperProfile.Map<UserModel>(user);
+        var user = await _unitOfWork.UsersRepository.GetByIdAsync(id);
+        return _mapperProfile.Map<UserViewModel>(user);
     }
 
-    public async Task AddAsync(UserModel model)
+    public async Task DeleteAsync(string id)
     {
-        var user = _mapperProfile.Map<User>(model);
-        await _unitOfWork.UsersRepository.AddAsync(user);
+        await _unitOfWork.UsersRepository.DeleteByIdAsync(id);
         await _unitOfWork.SaveAsync();
     }
 
-    public async Task UpdateAsync(UserModel model)
-    {
-        var user = _mapperProfile.Map<User>(model);
-        _unitOfWork.UsersRepository.Update(user);
-        await _unitOfWork.SaveAsync();
-    }
-
-    public async Task DeleteAsync(string userId)
-    {
-        await _unitOfWork.UsersRepository.DeleteByIdAsync(userId);
-        await _unitOfWork.SaveAsync();
-    }
-
-    public async Task RegisterAsync(UserModel model)
+    public async Task<UserViewModel> RegisterAsync(UserRegisterModel model)
     {
         var user = _mapperProfile.Map<User>(model);
         var result = await _userManager.CreateAsync(user, model.Password);
@@ -65,14 +57,26 @@ public class UserService : IUserService
         
         await _userManager.AddToRoleAsync(user, "User");
         await _signInManager.SignInAsync(user, false);
+        
+        var userViewModel = _mapperProfile.Map<UserViewModel>(user);
+        userViewModel.Token = _tokenGenerator.BuildNewToken(user);
+
+        return userViewModel;
+
     }
 
-    public async Task LoginAsync(UserModel model)
+    public async Task<UserViewModel> LoginAsync(UserLoginModel model)
     {
         var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
         
         if (!result.Succeeded)
             throw new FileStorageException("Login unsuccessful");
+        
+        var user = await _userManager.FindByNameAsync(model.UserName);
+        var userViewModel = _mapperProfile.Map<UserViewModel>(user);
+        userViewModel.Token = _tokenGenerator.BuildNewToken(user);
+
+        return userViewModel;
     }
 
     public async Task LogoutAsync()
@@ -80,7 +84,7 @@ public class UserService : IUserService
         await _signInManager.SignOutAsync();
     }
 
-    public async Task EditUserDataAsync(UserModel model)
+    public async Task EditUserDataAsync(UserEditModel model)
     {
         var user = await _userManager.FindByIdAsync(model.Id);
 
@@ -106,9 +110,9 @@ public class UserService : IUserService
 
     }
 
-    public async Task ChangeUserPasswordAsync(UserModel model)
+    public async Task ChangeUserPasswordAsync(string id, UserChangePasswordModel model)
     {
-        var user = await _userManager.FindByIdAsync(model.Id);
+        var user = await _userManager.FindByIdAsync(id);
         if (user == null)
             throw new FileStorageException("No such user found");
         
@@ -121,5 +125,19 @@ public class UserService : IUserService
         if (!result.Succeeded)
             throw new FileStorageException("Password change unsuccessful");
 
+    }
+    
+    public async Task<IEnumerable<FolderViewModel>> GetUserFoldersAsync(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        var folders = user.Folders;
+        return _mapperProfile.Map<IEnumerable<FolderViewModel>>(folders);
+    }
+    
+    public async Task<IEnumerable<StorageItemViewModel>> GetUserItemsAsync(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        var items = user.StorageItems;
+        return _mapperProfile.Map<IEnumerable<StorageItemViewModel>>(items);
     }
 }
