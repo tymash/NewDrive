@@ -34,7 +34,7 @@ public class StorageItemConfiguration : IEntityTypeConfiguration<StorageItem>
         builder.HasOne(storageItem => storageItem.ParentFolder)
             .WithMany(folder => folder.StorageItems)
             .HasForeignKey(storageItem => storageItem.ParentFolderId)
-            .OnDelete(DeleteBehavior.ClientSetNull);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(storageItem => storageItem.User)
             .WithMany(user => user.StorageItems)
