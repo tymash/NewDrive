@@ -110,9 +110,9 @@ public class UserService : IUserService
 
     }
 
-    public async Task ChangeUserPasswordAsync(string id, UserChangePasswordModel model)
+    public async Task ChangeUserPasswordAsync(UserChangePasswordModel model)
     {
-        var user = await _userManager.FindByIdAsync(id);
+        var user = await _userManager.FindByIdAsync(model.Id);
         if (user == null)
             throw new FileStorageException("No such user found");
         

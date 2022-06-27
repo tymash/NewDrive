@@ -1,6 +1,7 @@
 using AutoMapper;
 using FileStorage.BLL.Models;
 using FileStorage.BLL.Models.FolderModels;
+using FileStorage.BLL.Models.StorageItemModels;
 using FileStorage.BLL.Services.Interfaces;
 using FileStorage.BLL.Validation;
 using FileStorage.DAL.Entities;
@@ -77,15 +78,27 @@ public class FolderService : IFolderService
         {
             folders = folders.Where(folder => folder.Name.Contains(model.Name));
         } 
-        if (model.MinDate != null)
+        folders = model.DateSort switch
         {
-            folders = folders.Where(folder => folder.CreatedOn >= model.MinDate);
-        }
-        if (model.MaxDate != null)
+            Sort.Ascending => folders.OrderBy(f => f.CreatedOn),
+            Sort.Descending => folders.OrderByDescending(f => f.CreatedOn),
+            _ => folders
+        };
+        
+        folders = model.NameSort switch
         {
-            folders = folders.Where(folder => folder.CreatedOn <= model.MaxDate);
-        }
+            Sort.Ascending => folders.OrderBy(f => f.Name),
+            Sort.Descending => folders.OrderByDescending(f => f.Name),
+            _ => folders
+        };
         
         return _mapperProfile.Map<IEnumerable<FolderViewModel>>(folders);
+    }
+
+    public async Task<IEnumerable<StorageItemViewModel>> GetItemsInFolder(int id)
+    {
+        var folder = await _unitOfWork.FoldersRepository.GetByIdAsync(id);
+        var items = folder.StorageItems;
+        return _mapperProfile.Map<IEnumerable<StorageItemViewModel>>(items);
     }
 }

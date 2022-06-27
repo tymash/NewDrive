@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.DAL.Tests", "Fi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.BLL", "FileStorage.BLL\FileStorage.BLL.csproj", "{BB912EA5-7CB7-4A55-B7E2-02EA22E6E9BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.BLL.Tests", "FileStorage.BLL.Tests\FileStorage.BLL.Tests.csproj", "{F779AD8F-5998-4BA3-8D50-34F7F35EB474}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileStorage.PL", "FileStorage.PL\FileStorage.PL.csproj", "{26EFF738-2F0A-4A9D-BE1F-A92F2A9E20AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{BB912EA5-7CB7-4A55-B7E2-02EA22E6E9BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB912EA5-7CB7-4A55-B7E2-02EA22E6E9BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB912EA5-7CB7-4A55-B7E2-02EA22E6E9BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F779AD8F-5998-4BA3-8D50-34F7F35EB474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F779AD8F-5998-4BA3-8D50-34F7F35EB474}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F779AD8F-5998-4BA3-8D50-34F7F35EB474}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F779AD8F-5998-4BA3-8D50-34F7F35EB474}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26EFF738-2F0A-4A9D-BE1F-A92F2A9E20AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26EFF738-2F0A-4A9D-BE1F-A92F2A9E20AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26EFF738-2F0A-4A9D-BE1F-A92F2A9E20AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26EFF738-2F0A-4A9D-BE1F-A92F2A9E20AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

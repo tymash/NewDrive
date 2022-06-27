@@ -1,9 +1,9 @@
 # File Storage - Web Project
-- Access to a file by a short link. 
-- Shared and restricted files. 
-- For registered users - the ability to place files and manage files. 
+- Access to a file by a short link.
+- Shared and restricted files.
+- For registered users - the ability to place files and manage files.
 ### For special users:
-- Managing users and their files. 
+- Managing users and their files.
 - Search for files.
 ## Requirements for the project
 - The solution must have a three-layer architecture. The data access layer, business logic, Web application should be moved into separate projects.
