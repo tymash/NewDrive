@@ -12,8 +12,7 @@ public interface IUserService
     Task<UserViewModel> LoginAsync(UserLoginModel model); 
     Task LogoutAsync(); 
     Task EditUserDataAsync(UserEditModel model);
-    Task ChangeUserPasswordAsync(string id, UserChangePasswordModel model);
-    Task DeleteAsync(string id);
+    Task ChangeUserPasswordAsync(UserChangePasswordModel model);
     Task<IEnumerable<FolderViewModel>> GetUserFoldersAsync(string userId);
     Task<IEnumerable<StorageItemViewModel>> GetUserItemsAsync(string userId);
 

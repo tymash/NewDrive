@@ -3,6 +3,7 @@ namespace FileStorage.BLL.Models;
 public class FilterModel
 {
     public string? Name { get; set; }
-    public DateTime? MinDate { get; set; }
-    public DateTime? MaxDate { get; set; }
+    public Sort? DateSort { get; set; }
+    public Sort? NameSort { get; set; }
+    public Sort? SizeSort { get; set; }
 }

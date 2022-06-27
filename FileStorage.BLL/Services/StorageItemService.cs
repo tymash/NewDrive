@@ -71,29 +71,35 @@ public class StorageItemService : IStorageItemService
         await _unitOfWork.SaveAsync();
     }
 
-    public async Task<IEnumerable<StorageItemViewModel>> GetByUserIdAsync(string userId)
-    {
-        var storageItems = await _unitOfWork.StorageItemsRepository.GetAllAsync();
-        storageItems = storageItems.Where(storageItem => storageItem.UserId == userId);
-        return _mapperProfile.Map<IEnumerable<StorageItemViewModel>>(storageItems);
-    }
-
     public async Task<IEnumerable<StorageItemViewModel>> GetByFilterAsync(FilterModel model)
     {
         var storageItems = await _unitOfWork.StorageItemsRepository.GetAllAsync();
         if (model.Name != null)
         {
             storageItems = storageItems.Where(folder => folder.Name.Contains(model.Name));
-        } 
-        if (model.MinDate != null)
-        {
-            storageItems = storageItems.Where(folder => folder.CreatedOn >= model.MinDate);
         }
-        if (model.MaxDate != null)
+
+        storageItems = model.DateSort switch
         {
-            storageItems = storageItems.Where(folder => folder.CreatedOn <= model.MaxDate);
-        }
+            Sort.Ascending => storageItems.OrderBy(si => si.CreatedOn),
+            Sort.Descending => storageItems.OrderByDescending(si => si.CreatedOn),
+            _ => storageItems
+        };
         
+        storageItems = model.NameSort switch
+        {
+            Sort.Ascending => storageItems.OrderBy(si => si.Name),
+            Sort.Descending => storageItems.OrderByDescending(si => si.Name),
+            _ => storageItems
+        };
+        
+        storageItems = model.SizeSort switch
+        {
+            Sort.Ascending => storageItems.OrderBy(si => si.Size),
+            Sort.Descending => storageItems.OrderByDescending(si => si.Size),
+            _ => storageItems
+        };
+
         return _mapperProfile.Map<IEnumerable<StorageItemViewModel>>(storageItems);
     }
 }
