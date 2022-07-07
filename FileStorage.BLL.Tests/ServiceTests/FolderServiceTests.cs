@@ -64,9 +64,9 @@ public class FolderServiceTests
             Id = 1,
             UserId = "1",
             Name = "Folder1",
-            RelativePath = "/",
+            Path = "/",
             IsPrimaryFolder = true,
-            StorageItems = new List<StorageItem>()
+            Files = new List<File>()
         };
         
         _mockUnitOfWork.Setup(uow => uow.FoldersRepository.AddAsync(It.IsAny<Folder>()));
@@ -74,7 +74,7 @@ public class FolderServiceTests
         var folderModel = new FolderCreateModel
         {
             Name = "Folder1",
-            RelativePath = "/",
+            Path = "/",
             IsPrimaryFolder = true,
             UserId = "1"
         };
@@ -82,7 +82,7 @@ public class FolderServiceTests
         await _folderService.AddAsync(folderModel);
         
         Assert.IsTrue(folder.IsPrimaryFolder == folderModel.IsPrimaryFolder 
-                      && folder.RelativePath == folderModel.RelativePath
+                      && folder.Path == folderModel.Path
                       && folder.Name == folderModel.Name
                       && folder.UserId == folderModel.UserId);
     }
@@ -108,7 +108,7 @@ public class FolderServiceTests
         {
             Id = 1,
             Name = "Folder1", 
-            RelativePath = "/", 
+            Path = "/", 
             IsPrimaryFolder = true,
         };
     
@@ -116,7 +116,7 @@ public class FolderServiceTests
     
         Assert.IsTrue(folder.Id == editFolderModel.Id 
                       && folder.IsPrimaryFolder == editFolderModel.IsPrimaryFolder 
-                      && folder.RelativePath == editFolderModel.RelativePath
+                      && folder.Path == editFolderModel.Path
                       && folder.Name == editFolderModel.Name);
     }
     
@@ -157,14 +157,14 @@ public class FolderServiceTests
     private static IEnumerable<Folder> TestFolders =>
         new List<Folder>
         {
-            new() {Id = 1, UserId = "1", Name = "Folder1", RelativePath = "/", IsPrimaryFolder = true , StorageItems = new List<StorageItem>()},
-            new() {Id = 2, UserId = "1", Name = "Folder2", RelativePath = "/Folder1/", IsPrimaryFolder = false , StorageItems = new List<StorageItem>()},
-            new() {Id = 3, UserId = "1", Name = "Folder3", RelativePath = "/Folder1/", IsPrimaryFolder = false , StorageItems = new List<StorageItem>()},
-            new() {Id = 4, UserId = "2", Name = "Folder4", RelativePath = "/", IsPrimaryFolder = true , StorageItems = new List<StorageItem>()},
-            new() {Id = 5, UserId = "2", Name = "Folder5", RelativePath = "/", IsPrimaryFolder = true , StorageItems = new List<StorageItem>()},
-            new() {Id = 6, UserId = "2", Name = "Folder6", RelativePath = "MyStorage/Folder2/", IsPrimaryFolder = false , StorageItems = new List<StorageItem>()},
-            new() {Id = 7, UserId = "2", Name = "Folder7", RelativePath = "MyStorage/Folder2/", IsPrimaryFolder = false , StorageItems = new List<StorageItem>()},
-            new() {Id = 8, UserId = "3", Name = "Folder8", RelativePath = "MyStorage/Folder3/", IsPrimaryFolder = false , StorageItems = new List<StorageItem>()},
+            new() {Id = 1, UserId = "1", Name = "Folder1", Path = "/", IsPrimaryFolder = true , Files = new List<File>()},
+            new() {Id = 2, UserId = "1", Name = "Folder2", Path = "/Folder1/", IsPrimaryFolder = false , Files = new List<File>()},
+            new() {Id = 3, UserId = "1", Name = "Folder3", Path = "/Folder1/", IsPrimaryFolder = false , Files = new List<File>()},
+            new() {Id = 4, UserId = "2", Name = "Folder4", Path = "/", IsPrimaryFolder = true , Files = new List<File>()},
+            new() {Id = 5, UserId = "2", Name = "Folder5", Path = "/", IsPrimaryFolder = true , Files = new List<File>()},
+            new() {Id = 6, UserId = "2", Name = "Folder6", Path = "MyStorage/Folder2/", IsPrimaryFolder = false , Files = new List<File>()},
+            new() {Id = 7, UserId = "2", Name = "Folder7", Path = "MyStorage/Folder2/", IsPrimaryFolder = false , Files = new List<File>()},
+            new() {Id = 8, UserId = "3", Name = "Folder8", Path = "MyStorage/Folder3/", IsPrimaryFolder = false , Files = new List<File>()},
         };
 
     private static IEnumerable<(FilterModel, IEnumerable<Folder>)> GetFoldersByFilterTest()

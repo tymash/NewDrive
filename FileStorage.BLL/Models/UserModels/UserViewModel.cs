@@ -10,6 +10,6 @@ public class UserViewModel
     public string Surname { get; set; }
     
     public ICollection<int> FoldersIds { get; set; }
-    public ICollection<int> StorageItemsIds { get; set; }
+    public ICollection<int> FilesIds { get; set; }
     public string Token { get; set; }
 }

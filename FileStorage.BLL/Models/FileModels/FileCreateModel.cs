@@ -1,11 +1,11 @@
-namespace FileStorage.BLL.Models.StorageItemModels;
+namespace FileStorage.BLL.Models.FileModels;
 
-public class StorageItemCreateModel
+public class FileCreateModel
 {
     public string UserId { get; set; }
     public string Extension { get; set; }
     public string Name { get; set; }
     public bool IsRecycled { get; set; }
     public bool IsPublic { get; set; }
-    public string RelativePath { get; set; }
+    public string Path { get; set; }
 }

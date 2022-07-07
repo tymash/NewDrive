@@ -1,7 +1,7 @@
 using AutoMapper;
 using FileStorage.BLL.Models;
+using FileStorage.BLL.Models.FileModels;
 using FileStorage.BLL.Models.FolderModels;
-using FileStorage.BLL.Models.StorageItemModels;
 using FileStorage.BLL.Models.UserModels;
 using FileStorage.BLL.Services.Interfaces;
 using FileStorage.BLL.Tokens;
@@ -53,7 +53,10 @@ public class UserService : IUserService
         var result = await _userManager.CreateAsync(user, model.Password);
 
         if (!result.Succeeded)
-            throw new FileStorageException("Registration unsuccessful");
+        {
+            var exceptionText = result.Errors.Aggregate("User Creation Failed - Identity Exception. Errors were: \n\r\n\r", (current, error) => current + (" - " + error + "\n\r"));
+            throw new FileStorageException(exceptionText);
+        }
         
         await _userManager.AddToRoleAsync(user, "User");
         await _signInManager.SignInAsync(user, false);
@@ -70,7 +73,7 @@ public class UserService : IUserService
         var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
         
         if (!result.Succeeded)
-            throw new FileStorageException("Login unsuccessful");
+            throw new FileStorageException(result.ToString());
         
         var user = await _userManager.FindByNameAsync(model.UserName);
         var userViewModel = _mapperProfile.Map<UserViewModel>(user);
@@ -134,10 +137,10 @@ public class UserService : IUserService
         return _mapperProfile.Map<IEnumerable<FolderViewModel>>(folders);
     }
     
-    public async Task<IEnumerable<StorageItemViewModel>> GetUserItemsAsync(string userId)
+    public async Task<IEnumerable<FileViewModel>> GetUserItemsAsync(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
-        var items = user.StorageItems;
-        return _mapperProfile.Map<IEnumerable<StorageItemViewModel>>(items);
+        var items = user.Files;
+        return _mapperProfile.Map<IEnumerable<FileViewModel>>(items);
     }
 }

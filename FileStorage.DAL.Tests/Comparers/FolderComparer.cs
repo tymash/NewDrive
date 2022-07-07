@@ -17,12 +17,12 @@ public class FolderComparer : IEqualityComparer<Folder>
                && x.IsPrimaryFolder == y.IsPrimaryFolder 
                && x.Name == y.Name 
                && x.CreatedOn.Equals(y.CreatedOn) 
-               && x.RelativePath == y.RelativePath 
-               && x.StorageItems.Equals(y.StorageItems);
+               && x.Path == y.Path 
+               && x.Files.Equals(y.Files);
     }
 
     public int GetHashCode(Folder obj)
     {
-        return HashCode.Combine(obj.UserId, obj.User, obj.IsPrimaryFolder, obj.Name, obj.CreatedOn, obj.RelativePath, obj.StorageItems);
+        return HashCode.Combine(obj.UserId, obj.User, obj.IsPrimaryFolder, obj.Name, obj.CreatedOn, obj.Path, obj.Files);
     }
 }

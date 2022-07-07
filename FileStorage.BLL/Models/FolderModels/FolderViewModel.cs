@@ -7,7 +7,7 @@ public class FolderViewModel
     public bool IsPrimaryFolder { get; set; }
     public string Name { get; set; }
     public DateTime CreatedOn { get; set; }
-    public string RelativePath { get; set; }
+    public string Path { get; set; }
     
-    public ICollection<int> StorageItemsIds { get; set; }
+    public ICollection<int> FilesIds { get; set; }
 }

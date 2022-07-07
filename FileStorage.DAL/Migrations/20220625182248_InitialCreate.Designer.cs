@@ -43,7 +43,7 @@ namespace FileStorage.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("RelativePath")
+                    b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -58,7 +58,7 @@ namespace FileStorage.DAL.Migrations
                     b.ToTable("Folders");
                 });
 
-            modelBuilder.Entity("FileStorage.DAL.Entities.StorageItem", b =>
+            modelBuilder.Entity("FileStorage.DAL.Entities.file", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -92,7 +92,7 @@ namespace FileStorage.DAL.Migrations
                     b.Property<int>("ParentFolderId")
                         .HasColumnType("int");
 
-                    b.Property<string>("RelativePath")
+                    b.Property<string>("Path")
                         .IsRequired()
                         .HasMaxLength(900)
                         .HasColumnType("nvarchar(900)");
@@ -110,7 +110,7 @@ namespace FileStorage.DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("StorageItems");
+                    b.ToTable("files");
                 });
 
             modelBuilder.Entity("FileStorage.DAL.Entities.User", b =>
@@ -332,15 +332,15 @@ namespace FileStorage.DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FileStorage.DAL.Entities.StorageItem", b =>
+            modelBuilder.Entity("FileStorage.DAL.Entities.file", b =>
                 {
                     b.HasOne("FileStorage.DAL.Entities.Folder", "ParentFolder")
-                        .WithMany("StorageItems")
+                        .WithMany("files")
                         .HasForeignKey("ParentFolderId")
                         .IsRequired();
 
                     b.HasOne("FileStorage.DAL.Entities.User", "User")
-                        .WithMany("StorageItems")
+                        .WithMany("files")
                         .HasForeignKey("UserId")
                         .IsRequired();
 
@@ -402,14 +402,14 @@ namespace FileStorage.DAL.Migrations
 
             modelBuilder.Entity("FileStorage.DAL.Entities.Folder", b =>
                 {
-                    b.Navigation("StorageItems");
+                    b.Navigation("files");
                 });
 
             modelBuilder.Entity("FileStorage.DAL.Entities.User", b =>
                 {
                     b.Navigation("Folders");
 
-                    b.Navigation("StorageItems");
+                    b.Navigation("files");
                 });
 #pragma warning restore 612, 618
         }

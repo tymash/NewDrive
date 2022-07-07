@@ -1,6 +1,6 @@
 using System.Net;
+using FileStorage.BLL.Models.FileModels;
 using FileStorage.BLL.Models.FolderModels;
-using FileStorage.BLL.Models.StorageItemModels;
 using FileStorage.BLL.Models.UserModels;
 using FileStorage.BLL.Services.Interfaces;
 using FileStorage.DAL.Entities;
@@ -121,9 +121,9 @@ public class UsersController : ControllerBase
     }
     
     // GET: api/users/1/userFolders
-    [HttpGet("{userId}/userStorageItems")]
+    [HttpGet("{userId}/userFiles")]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<StorageItemViewModel>>> GetUserItems(string userId)
+    public async Task<ActionResult<IEnumerable<FileViewModel>>> GetUserItems(string userId)
     {
         var currentUser = await _userManager.FindByNameAsync(User.Identity?.Name);
         

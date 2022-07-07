@@ -11,7 +11,7 @@ namespace FileStorage.DAL.Migrations
         {
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedOn",
-                table: "StorageItems",
+                table: "files",
                 type: "datetime2",
                 nullable: false,
                 defaultValue: new DateTime(2022, 6, 26, 22, 15, 12, 163, DateTimeKind.Local).AddTicks(6420),
@@ -34,7 +34,7 @@ namespace FileStorage.DAL.Migrations
         {
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedOn",
-                table: "StorageItems",
+                table: "files",
                 type: "datetime2",
                 nullable: false,
                 defaultValue: new DateTime(2022, 6, 26, 18, 32, 13, 270, DateTimeKind.Local).AddTicks(3170),

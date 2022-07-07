@@ -5,7 +5,7 @@ namespace FileStorage.DAL.UnitOfWork;
 public interface IUnitOfWork
 {
     public IUsersRepository UsersRepository { get; }
-    public IStorageItemsRepository StorageItemsRepository { get; }
+    public IFilesRepository FilesRepository { get; }
     public IFoldersRepository FoldersRepository { get; }
     public Task SaveAsync();
 }

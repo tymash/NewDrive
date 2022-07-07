@@ -71,7 +71,7 @@ public class FoldersRepositoryTests
             IsPrimaryFolder = true, 
             UserId = "3", 
             Name = "MyStorage",
-            RelativePath = "/"
+            Path = "/"
         };
 
         await _foldersRepository.AddAsync(folder);

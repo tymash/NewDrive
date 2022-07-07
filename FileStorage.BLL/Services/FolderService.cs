@@ -1,7 +1,7 @@
 using AutoMapper;
 using FileStorage.BLL.Models;
+using FileStorage.BLL.Models.FileModels;
 using FileStorage.BLL.Models.FolderModels;
-using FileStorage.BLL.Models.StorageItemModels;
 using FileStorage.BLL.Services.Interfaces;
 using FileStorage.BLL.Validation;
 using FileStorage.DAL.Entities;
@@ -40,7 +40,7 @@ public class FolderService : IFolderService
         if (string.IsNullOrEmpty(model.Name))
             throw new FileStorageException("Name is empty");
 
-        if (string.IsNullOrEmpty(model.RelativePath))
+        if (string.IsNullOrEmpty(model.Path))
             throw new FileStorageException("Path is empty");
 
         var folder = _mapperProfile.Map<Folder>(model);
@@ -57,7 +57,7 @@ public class FolderService : IFolderService
         if (string.IsNullOrEmpty(model.Name))
             throw new FileStorageException("Name is empty");
 
-        if (string.IsNullOrEmpty(model.RelativePath))
+        if (string.IsNullOrEmpty(model.Path))
             throw new FileStorageException("Path is empty");
         
         var folder = _mapperProfile.Map<Folder>(model);
@@ -95,10 +95,10 @@ public class FolderService : IFolderService
         return _mapperProfile.Map<IEnumerable<FolderViewModel>>(folders);
     }
 
-    public async Task<IEnumerable<StorageItemViewModel>> GetItemsInFolder(int id)
+    public async Task<IEnumerable<FileViewModel>> GetItemsInFolder(int id)
     {
         var folder = await _unitOfWork.FoldersRepository.GetByIdAsync(id);
-        var items = folder.StorageItems;
-        return _mapperProfile.Map<IEnumerable<StorageItemViewModel>>(items);
+        var items = folder.Files;
+        return _mapperProfile.Map<IEnumerable<FileViewModel>>(items);
     }
 }

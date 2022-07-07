@@ -4,9 +4,9 @@ using FileStorage.DAL.Entities;
 
 namespace FileStorage.DAL.Tests.Comparers;
 
-public class StorageItemComparer : IEqualityComparer<StorageItem>
+public class FileComparer : IEqualityComparer<File>
 {
-    public bool Equals(StorageItem x, StorageItem y)
+    public bool Equals(File x, File y)
     {
         if (ReferenceEquals(x, y)) return true;
         if (ReferenceEquals(x, null)) return false;
@@ -18,14 +18,14 @@ public class StorageItemComparer : IEqualityComparer<StorageItem>
                && x.Size == y.Size 
                && x.IsRecycled == y.IsRecycled 
                && x.IsPublic == y.IsPublic 
-               && x.RelativePath == y.RelativePath 
+               && x.Path == y.Path 
                && x.UserId == y.UserId 
                && x.User.Equals(y.User) 
                && x.ParentFolderId == y.ParentFolderId 
                && x.ParentFolder.Equals(y.ParentFolder);
     }
 
-    public int GetHashCode(StorageItem obj)
+    public int GetHashCode(File obj)
     {
         var hashCode = new HashCode();
         hashCode.Add(obj.CreatedOn);
@@ -34,7 +34,7 @@ public class StorageItemComparer : IEqualityComparer<StorageItem>
         hashCode.Add(obj.Size);
         hashCode.Add(obj.IsRecycled);
         hashCode.Add(obj.IsPublic);
-        hashCode.Add(obj.RelativePath);
+        hashCode.Add(obj.Path);
         hashCode.Add(obj.UserId);
         hashCode.Add(obj.User);
         hashCode.Add(obj.ParentFolderId);

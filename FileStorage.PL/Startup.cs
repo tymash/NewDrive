@@ -40,7 +40,7 @@ public class Startup
         
         services.AddTransient<IUnitOfWork, UnitOfWork>();
         services.AddTransient<IUserService, UserService>();
-        services.AddTransient<IStorageItemService, StorageItemService>();
+        services.AddTransient<IFileService, FileService>();
         services.AddTransient<IFolderService, FolderService>();
         services.AddScoped<ITokenGenerator, TokenGenerator>();
         services.AddSession();
