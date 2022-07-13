@@ -9,6 +9,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly AppDbContext _context;
     private IUsersRepository? _usersRepository;
     private IFilesRepository? _filesRepository;
+    private IFileStorageRepository? _fileStorageRepository;
     private IFoldersRepository? _foldersRepository;
 
     public UnitOfWork()
@@ -36,6 +37,15 @@ public class UnitOfWork : IUnitOfWork
         {
             _filesRepository ??= new FilesRepository(_context);
             return _filesRepository;
+        }
+    }
+
+    public IFileStorageRepository FileStorageRepository
+    {
+        get
+        {
+            _fileStorageRepository ??= new StorageRepository();
+            return _fileStorageRepository;
         }
     }
 

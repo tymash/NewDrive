@@ -6,6 +6,7 @@ public interface IUnitOfWork
 {
     public IUsersRepository UsersRepository { get; }
     public IFilesRepository FilesRepository { get; }
+    public IFileStorageRepository FileStorageRepository { get; }
     public IFoldersRepository FoldersRepository { get; }
     public Task SaveAsync();
 }
