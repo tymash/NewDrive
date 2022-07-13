@@ -1,5 +1,4 @@
 using AutoMapper;
-using FileStorage.BLL.Models;
 using FileStorage.BLL.Models.FileModels;
 using FileStorage.BLL.Models.FolderModels;
 using FileStorage.BLL.Models.UserModels;
@@ -54,30 +53,27 @@ public class UserService : IUserService
 
         if (!result.Succeeded)
         {
-            var exceptionText = result.Errors.Aggregate("User Creation Failed - Identity Exception. Errors were: \n\r\n\r", (current, error) => current + (" - " + error + "\n\r"));
-            throw new FileStorageException(exceptionText);
+            throw new FileStorageException("Registration was unsuccesful");
         }
         
         await _userManager.AddToRoleAsync(user, "User");
-        await _signInManager.SignInAsync(user, false);
-        
+
         var userViewModel = _mapperProfile.Map<UserViewModel>(user);
-        userViewModel.Token = _tokenGenerator.BuildNewToken(user);
+        userViewModel.Token = await _tokenGenerator.BuildNewTokenAsync(user);
 
         return userViewModel;
-
     }
 
     public async Task<UserViewModel> LoginAsync(UserLoginModel model)
     {
-        var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user == null)
+            throw new FileStorageException("Incorrect email entered");
+        if (!await _userManager.CheckPasswordAsync(user, model.Password))
+            throw new FileStorageException("Incorrect password entered");
         
-        if (!result.Succeeded)
-            throw new FileStorageException(result.ToString());
-        
-        var user = await _userManager.FindByNameAsync(model.UserName);
         var userViewModel = _mapperProfile.Map<UserViewModel>(user);
-        userViewModel.Token = _tokenGenerator.BuildNewToken(user);
+        userViewModel.Token = await _tokenGenerator.BuildNewTokenAsync(user);
 
         return userViewModel;
     }
@@ -99,10 +95,7 @@ public class UserService : IUserService
         
         if (string.IsNullOrEmpty(model.Surname))
             throw new FileStorageException("Surname is empty");
-        
-        if (string.IsNullOrEmpty(model.UserName))
-            throw new FileStorageException("Username is empty");
-        
+
         if (string.IsNullOrEmpty(model.Email)) 
             throw new FileStorageException("Email is empty");
 

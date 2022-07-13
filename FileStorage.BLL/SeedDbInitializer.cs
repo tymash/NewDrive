@@ -1,3 +1,4 @@
+using FileStorage.BLL.Services.Interfaces;
 using FileStorage.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -15,22 +16,24 @@ public static class SeedDbInitializer
         if (!roleManager.RoleExistsAsync("Administrator").Result)
             roleManager.CreateAsync(new IdentityRole("Administrator")).Wait();
     }
-    public static void SeedUsers(IConfiguration configuration, UserManager<User> userManager)
+    public static void SeedUsers(UserManager<User> userManager, IFolderService folderService)
     {
-        const string mainAdminUsername = "tymash";
+        const string mainAdminEmail = "tymash@email.com";
 
-        if (userManager.FindByNameAsync(mainAdminUsername).Result != null) return;
+        if (userManager.FindByEmailAsync(mainAdminEmail).Result != null) return;
         var user = new User
         {
             Id = Guid.NewGuid().ToString(),
-            Name = "Tymofii",
+            Name = "Tymofiy",
             Surname = "Karakash",
-            UserName = "tymash",
-            Email = "karakash.tymofiy@gmail.com"
+            UserName = mainAdminEmail,
+            Email = mainAdminEmail
         };
 
         userManager.CreateAsync(user, "ash2001").Wait();
         userManager.AddToRoleAsync(user, "Administrator").Wait();
+        
+        folderService.CreatePrimaryFolderAsync(user.Id).Wait();
     }
 
 }

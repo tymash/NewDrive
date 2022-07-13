@@ -14,16 +14,19 @@ public class AutomapperProfile : Profile
         CreateMap<User, UserViewModel>()
             .ForMember(um => um.FoldersIds, mo => mo.MapFrom(u => u.Folders.Select(f => f.Id)))
             .ForMember(um => um.FilesIds, mo => mo.MapFrom(u => u.Files.Select(si => si.Id)))
-            .ReverseMap();
+            .ReverseMap()
+            .ForPath(u => u.UserName, cfg => cfg.MapFrom(um => um.Email));
         
         CreateMap<User, UserEditModel>()
-            .ReverseMap();
+            .ReverseMap()
+            .ForPath(u => u.UserName, cfg => cfg.MapFrom(um => um.Email));
         
         CreateMap<User, UserLoginModel>()
             .ReverseMap();
         
         CreateMap<User, UserRegisterModel>()
-            .ReverseMap();
+            .ReverseMap()
+            .ForPath(u => u.UserName, cfg => cfg.MapFrom(um => um.Email));
         
         CreateMap<User, UserChangePasswordModel>()
             .ReverseMap();
