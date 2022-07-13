@@ -47,8 +47,7 @@ public class UserServiceTests
             Email = "email@email.com",
             Name = "Name",
             Surname = "Surname",
-            Password = "password",
-            UserName = "username"
+            Password = "password"
         };
 
 
@@ -81,14 +80,14 @@ public class UserServiceTests
     {
         var userModel = new UserLoginModel
         {
-            UserName = "username",
+            Email = "username",
             Password = "password",
         };
 
         var user = new User
         {
             Id = Guid.NewGuid().ToString(),
-            UserName = userModel.UserName,
+            UserName = userModel.Email,
             Email = "email@email.com",
             Name = "Name",
             Surname = "Surname"
@@ -98,14 +97,14 @@ public class UserServiceTests
             .ReturnsAsync(SignInResult.Success);
         _mockUserManager.Setup(um => um.FindByNameAsync(It.IsAny<string>()))
             .ReturnsAsync(user);
-        _mockTokenGenerator.Setup(tg => tg.BuildNewToken(It.IsAny<User>()))
-            .Returns(It.IsAny<string>());
+        _mockTokenGenerator.Setup(tg => tg.BuildNewTokenAsync(It.IsAny<User>()))
+            .Returns(It.IsAny<Task<string>>());
         
 
         await _userService.LoginAsync(userModel);
 
         _mockSignInManager.Verify(sim => sim.PasswordSignInAsync(
-            It.Is<string>(username => username == userModel.UserName),
+            It.Is<string>(username => username == userModel.Email),
             It.Is<string>(password => password == userModel.Password), true, false));
     }
 
@@ -146,7 +145,6 @@ public class UserServiceTests
         var userModel = new UserEditModel
         {
             Id = Guid.NewGuid().ToString(),
-            UserName = "username",
             Name = "Name",
             Surname = "Surname",
             Email = "email@email.com"
@@ -156,7 +154,7 @@ public class UserServiceTests
             .ReturnsAsync(new User
             {
                 Id = userModel.Id,
-                UserName = userModel.UserName,
+                UserName = userModel.Email,
                 Email = userModel.Email,
                 Name = userModel.Name,
                 Surname = userModel.Surname
