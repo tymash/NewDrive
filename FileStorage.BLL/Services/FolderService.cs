@@ -44,9 +44,26 @@ public class FolderService : IFolderService
             throw new FileStorageException("Path is empty");
 
         var folder = _mapperProfile.Map<Folder>(model);
+        await _unitOfWork.FoldersRepository.AddAsync(folder);
         await _unitOfWork.SaveAsync();
 
         return _mapperProfile.Map<FolderViewModel>(folder);
+    }
+    
+    public async Task CreatePrimaryFolderAsync(string userId)
+    {
+        if (userId == null)
+            throw new FileStorageException("No such user found");
+
+        var folder = new FolderCreateModel
+        {
+            IsPrimaryFolder = true,
+            Name = "PrimaryFolder",
+            Path = "/",
+            UserId = userId
+        };
+
+        await AddAsync(folder);
     }
 
     public async Task UpdateAsync(FolderEditModel model)
