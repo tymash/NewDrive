@@ -4,5 +4,5 @@ namespace FileStorage.BLL.Tokens;
 
 public interface ITokenGenerator
 {
-    string BuildNewToken(User user);
+    Task<string> BuildNewTokenAsync(User user);
 }
