@@ -4,6 +4,7 @@ using FileStorage.DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FileStorage.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220707155217_RenamedStorageItem")]
+    partial class RenamedStorageItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +35,7 @@ namespace FileStorage.DAL.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 7, 12, 19, 33, 8, 234, DateTimeKind.Local).AddTicks(2470));
+                        .HasDefaultValue(new DateTime(2022, 7, 7, 18, 52, 17, 96, DateTimeKind.Local).AddTicks(6090));
 
                     b.Property<string>("Extension")
                         .IsRequired()
@@ -90,7 +92,7 @@ namespace FileStorage.DAL.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
+                        .HasDefaultValue(new DateTime(2022, 7, 7, 18, 52, 17, 96, DateTimeKind.Local).AddTicks(7300));
 
                     b.Property<bool>("IsPrimaryFolder")
                         .HasColumnType("bit");

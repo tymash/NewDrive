@@ -19,7 +19,7 @@ public class FolderConfiguration : IEntityTypeConfiguration<Folder>
 
         builder.Property(folder => folder.CreatedOn)
             .IsRequired()
-            .HasDefaultValue(DateTime.Now);
+            .HasDefaultValueSql("getdate()");
         
         builder.HasOne(folder => folder.User)
             .WithMany(user => user.Folders)
