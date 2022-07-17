@@ -79,7 +79,7 @@ public class StorageRepository : IFileStorageRepository
         }
     }
 
-    public StorageFile CreateFileItemFormFile(IFormFile formFile, Folder primaryFolder, string userId)
+    public StorageFile CreateFileItemFormFile(IFormFile formFile, string userId)
     {
         var fileItem = new StorageFile
         {
@@ -89,10 +89,9 @@ public class StorageRepository : IFileStorageRepository
             IsRecycled = false,
             IsPublic = false,
             Size = formFile.Length,
-            UserId = userId,
-            ParentFolder = primaryFolder
+            UserId = userId
         };
-        fileItem.Path = Path.Combine(fileItem.ParentFolder.Path, fileItem.Name);
+        fileItem.Path = Path.Combine("/", fileItem.Name);
 
         return fileItem;
     }

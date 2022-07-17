@@ -9,7 +9,6 @@ public class AppDbContext : IdentityDbContext<User>
 {
     public DbSet<User> Users { get; set; }
     public DbSet<File> Files { get; set; }
-    public DbSet<Folder> Folders { get; set; }
 
     public AppDbContext()
     {
@@ -30,6 +29,5 @@ public class AppDbContext : IdentityDbContext<User>
         
         builder.ApplyConfiguration(new UserConfiguration());
         builder.ApplyConfiguration(new FileConfiguration());
-        builder.ApplyConfiguration(new FolderConfiguration());
     }
 }

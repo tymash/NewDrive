@@ -13,6 +13,4 @@ public class File : BaseEntity
     
     public string UserId { get; set; }
     public virtual User User { get; set; }
-    public int ParentFolderId { get; set; }
-    public virtual Folder ParentFolder { get; set; }
 }

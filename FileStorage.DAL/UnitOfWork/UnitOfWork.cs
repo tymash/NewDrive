@@ -10,7 +10,6 @@ public class UnitOfWork : IUnitOfWork
     private IUsersRepository? _usersRepository;
     private IFilesRepository? _filesRepository;
     private IFileStorageRepository? _fileStorageRepository;
-    private IFoldersRepository? _foldersRepository;
 
     public UnitOfWork()
     {
@@ -46,15 +45,6 @@ public class UnitOfWork : IUnitOfWork
         {
             _fileStorageRepository ??= new StorageRepository();
             return _fileStorageRepository;
-        }
-    }
-
-    public IFoldersRepository FoldersRepository
-    {
-        get
-        {
-            _foldersRepository ??= new FoldersRepository(_context);
-            return _foldersRepository;
         }
     }
 

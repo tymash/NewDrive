@@ -32,11 +32,6 @@ public class FileConfiguration : IEntityTypeConfiguration<File>
             .IsRequired()
             .HasDefaultValue(DateTime.Now);
 
-        builder.HasOne(file => file.ParentFolder)
-            .WithMany(folder => folder.Files)
-            .HasForeignKey(file => file.ParentFolderId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasOne(file => file.User)
             .WithMany(user => user.Files)
             .HasForeignKey(file => file.UserId)

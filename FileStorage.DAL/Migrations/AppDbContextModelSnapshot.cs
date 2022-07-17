@@ -33,7 +33,7 @@ namespace FileStorage.DAL.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 7, 12, 19, 33, 8, 234, DateTimeKind.Local).AddTicks(2470));
+                        .HasDefaultValue(new DateTime(2022, 7, 17, 16, 45, 16, 66, DateTimeKind.Local).AddTicks(30));
 
                     b.Property<string>("Extension")
                         .IsRequired()
@@ -55,9 +55,6 @@ namespace FileStorage.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("ParentFolderId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Path")
                         .IsRequired()
                         .HasMaxLength(900)
@@ -72,47 +69,9 @@ namespace FileStorage.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentFolderId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Files");
-                });
-
-            modelBuilder.Entity("FileStorage.DAL.Entities.Folder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
-
-                    b.Property<bool>("IsPrimaryFolder")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Folders");
                 });
 
             modelBuilder.Entity("FileStorage.DAL.Entities.User", b =>
@@ -325,28 +284,9 @@ namespace FileStorage.DAL.Migrations
 
             modelBuilder.Entity("FileStorage.DAL.Entities.File", b =>
                 {
-                    b.HasOne("FileStorage.DAL.Entities.Folder", "ParentFolder")
-                        .WithMany("Files")
-                        .HasForeignKey("ParentFolderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FileStorage.DAL.Entities.User", "User")
                         .WithMany("Files")
                         .HasForeignKey("UserId")
-                        .IsRequired();
-
-                    b.Navigation("ParentFolder");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("FileStorage.DAL.Entities.Folder", b =>
-                {
-                    b.HasOne("FileStorage.DAL.Entities.User", "User")
-                        .WithMany("Folders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -403,16 +343,9 @@ namespace FileStorage.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FileStorage.DAL.Entities.Folder", b =>
-                {
-                    b.Navigation("Files");
-                });
-
             modelBuilder.Entity("FileStorage.DAL.Entities.User", b =>
                 {
                     b.Navigation("Files");
-
-                    b.Navigation("Folders");
                 });
 #pragma warning restore 612, 618
         }

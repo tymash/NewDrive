@@ -10,5 +10,5 @@ public interface IFileStorageRepository
     Task<MemoryStream> ReadFileAsync(string path);
     void DeleteFile(string path);
     Task<byte[]> ProcessFormFileAsync(IFormFile formFile, long sizeLimit);
-    File CreateFileItemFormFile(IFormFile formFile, Folder primaryFolder, string userId);
+    File CreateFileItemFormFile(IFormFile formFile, string userId);
 }

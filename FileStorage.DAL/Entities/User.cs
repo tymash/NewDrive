@@ -6,7 +6,6 @@ public class User : IdentityUser
 {
     public string Name { get; set; }
     public string Surname { get; set; }
-    public virtual ICollection<Folder> Folders { get; set; }
     public virtual ICollection<File> Files { get; set; }
 
 }
