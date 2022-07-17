@@ -68,7 +68,6 @@ public class FilesRepositoryTests
         var file = new File
         {
             Id = 9, 
-            ParentFolderId = 5, 
             UserId = "3",
             Name = "File9",
             Path = "MyStorage/Folder3/",
@@ -119,7 +118,6 @@ public class FilesRepositoryTests
     {
         var file = _unitTestHelper.Files[0];
 
-        file.ParentFolderId = 4;
         file.Name = "NewFile";
         file.Path = "MyStorage/Folder2/";
         file.Extension = "mp3";

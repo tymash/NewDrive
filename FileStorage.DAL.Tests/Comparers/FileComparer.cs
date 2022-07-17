@@ -20,9 +20,7 @@ public class FileComparer : IEqualityComparer<File>
                && x.IsPublic == y.IsPublic 
                && x.Path == y.Path 
                && x.UserId == y.UserId 
-               && x.User.Equals(y.User) 
-               && x.ParentFolderId == y.ParentFolderId 
-               && x.ParentFolder.Equals(y.ParentFolder);
+               && x.User.Equals(y.User);
     }
 
     public int GetHashCode(File obj)
@@ -37,8 +35,6 @@ public class FileComparer : IEqualityComparer<File>
         hashCode.Add(obj.Path);
         hashCode.Add(obj.UserId);
         hashCode.Add(obj.User);
-        hashCode.Add(obj.ParentFolderId);
-        hashCode.Add(obj.ParentFolder);
         return hashCode.ToHashCode();
     }
 }
