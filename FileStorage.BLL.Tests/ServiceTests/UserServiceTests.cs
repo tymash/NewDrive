@@ -80,7 +80,7 @@ public class UserServiceTests
     {
         var userModel = new UserLoginModel
         {
-            Email = "username",
+            Email = "username@email.com",
             Password = "password",
         };
 
@@ -88,24 +88,25 @@ public class UserServiceTests
         {
             Id = Guid.NewGuid().ToString(),
             UserName = userModel.Email,
-            Email = "email@email.com",
+            Email = userModel.Email,
             Name = "Name",
             Surname = "Surname"
         };
-
-        _mockSignInManager.Setup(sim => sim.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), true, false))
-            .ReturnsAsync(SignInResult.Success);
-        _mockUserManager.Setup(um => um.FindByNameAsync(It.IsAny<string>()))
+        
+        _mockUserManager.Setup(um => um.FindByEmailAsync(It.IsAny<string>()))
             .ReturnsAsync(user);
+        _mockUserManager.Setup(um => um.CheckPasswordAsync(It.IsAny<User>(), It.IsAny<string>()))
+            .ReturnsAsync(true);
         _mockTokenGenerator.Setup(tg => tg.BuildNewTokenAsync(It.IsAny<User>()))
-            .Returns(It.IsAny<Task<string>>());
+            .ReturnsAsync("token");
         
 
-        await _userService.LoginAsync(userModel);
+        var userViewModel = await _userService.LoginAsync(userModel);
 
-        _mockSignInManager.Verify(sim => sim.PasswordSignInAsync(
-            It.Is<string>(username => username == userModel.Email),
-            It.Is<string>(password => password == userModel.Password), true, false));
+        Assert.IsTrue(userViewModel.Email == userModel.Email
+                      && userViewModel.Name == user.Name && userViewModel.Surname == user.Surname
+                      && userViewModel.Token == "token");
+
     }
 
     [Test]
