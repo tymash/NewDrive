@@ -1,6 +1,4 @@
 using System.Net;
-using FileStorage.BLL.Models.FileModels;
-using FileStorage.BLL.Models.FolderModels;
 using FileStorage.BLL.Models.UserModels;
 using FileStorage.BLL.Services.Interfaces;
 using FileStorage.DAL.Entities;
@@ -49,6 +47,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult> Register([FromBody] UserRegisterModel userModel)
     {
         var result = await _userService.RegisterAsync(userModel);
+        var user = _userManager.FindByEmailAsync(userModel.Email);
 
         return new ObjectResult(result);
     }
@@ -90,8 +89,8 @@ public class UsersController : ControllerBase
         return CreatedAtAction("GetById", new {userId = userId}, userModel);
     }
 
-    // PUT: api/users/change-password/1
-    [HttpPut("change-password/{userId}")]
+    // PUT: api/users/change-password/
+    [HttpPut("change-password/")]
     [Authorize]
     public async Task<ActionResult> ChangeUserPassword([FromBody] UserChangePasswordModel userModel)
     {
@@ -103,35 +102,5 @@ public class UsersController : ControllerBase
         await _userService.ChangeUserPasswordAsync(userModel);
 
         return Ok();
-    }
-    
-    // GET: api/users/1/userFolders
-    [HttpGet("{userId}/userFolders")]
-    [Authorize]
-    public async Task<ActionResult<IEnumerable<FolderViewModel>>> GetUserFolders(string userId)
-    {
-        var currentUser = await _userManager.FindByNameAsync(User.Identity?.Name);
-        
-        if (currentUser.Id != userId && !await _userManager.IsInRoleAsync(currentUser, "Administrator"))
-            return StatusCode((int)HttpStatusCode.Forbidden);
-
-        var folders = await _userService.GetUserFoldersAsync(userId);
-
-        return new ObjectResult(folders);
-    }
-    
-    // GET: api/users/1/userFolders
-    [HttpGet("{userId}/userFiles")]
-    [Authorize]
-    public async Task<ActionResult<IEnumerable<FileViewModel>>> GetUserItems(string userId)
-    {
-        var currentUser = await _userManager.FindByNameAsync(User.Identity?.Name);
-        
-        if (currentUser.Id != userId && !await _userManager.IsInRoleAsync(currentUser, "Administrator"))
-            return StatusCode((int)HttpStatusCode.Forbidden);
-
-        var folders = await _userService.GetUserItemsAsync(userId);
-
-        return new ObjectResult(folders);
     }
 }
