@@ -1,7 +1,8 @@
 # File Storage - Web Project
+## Preview
 ![alt text](1.png)
 ![alt text](2.png)
-#
+## Functionality requirements
 - Access to a file by a short link.
 - Shared and restricted files.
 - For registered users - the ability to place files and manage files.
