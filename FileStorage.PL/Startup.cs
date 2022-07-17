@@ -1,7 +1,7 @@
+using System.Text;
 using AutoMapper;
 using FileStorage.BLL;
 using FileStorage.BLL.Mapping;
-using FileStorage.BLL.Models;
 using FileStorage.BLL.Services;
 using FileStorage.BLL.Services.Interfaces;
 using FileStorage.BLL.Tokens;
@@ -11,6 +11,7 @@ using FileStorage.DAL.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FileStorage.PL;
 
@@ -35,16 +36,6 @@ public class Startup
         services.AddDbContext<AppDbContext>(
             options => options.UseSqlServer(Configuration.GetConnectionString("f-Storage")).UseLazyLoadingProxies());
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
-        services.AddAuthorization();
-        
-        services.AddTransient<IUnitOfWork, UnitOfWork>();
-        services.AddTransient<IUserService, UserService>();
-        services.AddTransient<IFileService, FileService>();
-        services.AddTransient<IFolderService, FolderService>();
-        services.AddScoped<ITokenGenerator, TokenGenerator>();
-        services.AddSession();
-
         services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
@@ -54,34 +45,70 @@ public class Startup
                 options.Password.RequireDigit = false;
             })
             .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders()
-            .AddRoleManager<RoleManager<IdentityRole>>();
+            .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
 
-        services.AddMvc();
-        services.AddHttpContextAccessor();
-        services.AddControllers();
+        services.AddAuthorization();
+        services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(opt =>
+                {
+                    opt.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                    };
+                }
+            );
+        
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IFileService, FileService>();
+        services.AddScoped<ITokenGenerator, TokenGenerator>();
+        
+        services.AddCors(options =>
+        {
+            options.AddPolicy("EnableCORS", builder =>
+            {
+                builder
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithOrigins("http://localhost:4200");
+            });
+        });
+        
         services.AddSwaggerGen();
+        services.AddControllers();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env
-        , UserManager<User> userManager, RoleManager<IdentityRole> roleManager
-        )
+        , UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
     {
         SeedDbInitializer.SeedRoles(roleManager);
-        SeedDbInitializer.SeedUsers(Configuration, userManager);
+        SeedDbInitializer.SeedUsers(userManager);
 
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
         }
-
-        app.UseHttpsRedirection();
-
-        app.UseRouting();
-
-        app.UseAuthentication();
-        app.UseAuthorization();
         
+        app.UseStaticFiles();
+
+        app.UseCors("EnableCORS");
+        app.UseHttpsRedirection();
+        
+        app.UseAuthentication();
+        app.UseRouting();
+        app.UseAuthorization();
+
         app.UseSwagger();
         app.UseSwaggerUI();
 
