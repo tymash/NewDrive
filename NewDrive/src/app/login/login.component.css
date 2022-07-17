@@ -1,0 +1,33 @@
+.login-body {
+  width: 100%;
+  min-height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.login-form {
+  width: 400px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-form a {
+  margin-top: 5px;
+  color: #62A1FF;
+  cursor: pointer;
+}
+
+.login-error {
+  margin-top: 15px;
+  color: #FF4F4F;
+}
+
+input.ng-touched.ng-invalid {
+  background-color: #ffd2d2;
+}

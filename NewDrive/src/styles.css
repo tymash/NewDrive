@@ -1,0 +1,83 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300&display=swap');
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
+
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+app-root {
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  pointer-events: none;
+}
+
+html, body { height: 100%; }
+
+body {
+  --text-color: black;
+  --bkg-color: transparent;
+  --nav-color: white;
+}
+
+body.dark-theme {
+  --text-color: #DEDEDE;
+  --bkg-color: #121212;
+  --nav-color: #121212;
+}
+
+body, .form-control{
+  background: var(--bkg-color);
+}
+
+table * {
+  color: var(--text-color);
+}
+
+app-upload * {
+  color: var(--text-color);
+}
+
+.my-drop-zone {
+  background: var(--bkg-color);
+  color: var(--text-color);
+  border-color: var(--text-color);
+}
+
+app-nav * {
+  color: var(--nav-color);
+}
+
+app-nav button {
+  color: var(--nav-color);
+}
+
+app-login * {
+  background: var(--bkg-color);
+  color: var(--text-color);
+}
+
+app-registration * {
+  background: var(--bkg-color);
+  color: var(--text-color);
+}
+
+.container {
+  color: var(--bkg-color);
+}

@@ -1,0 +1,39 @@
+<main>
+  <div class="form-background">
+    <h2>Create an account</h2>
+    <div class="registration-form">
+      <div class="form-group w-75">
+        <label>Name</label>
+        <input class="form-control" [(ngModel)]="userRegisterModel.name" name="name" pattern="[a-zA-Z]+" minlength="2" maxlength="30" required #name="ngModel">
+      </div>
+      <div class="form-group w-75">
+        <label>Surname</label>
+        <input class="form-control" [(ngModel)]="userRegisterModel.surname" name="surname" pattern="[a-zA-Z]+" minlength="2" maxlength="30" required
+          #surname="ngModel">
+      </div>
+      <div class="form-group w-75">
+        <label>Email</label>
+        <input class="form-control" [(ngModel)]="userRegisterModel.email" email name="email" minlength="3" maxlength="255" required #email="ngModel">
+      </div>
+      <div class="form-group w-75">
+        <label>Password</label>
+        <input class="form-control" [(ngModel)]="userRegisterModel.password" type="password" name="password" minlength="6" maxlength="16" required #pass="ngModel">
+      </div>
+      <div class="form-group w-75">
+        <label>Confirm Password</label>
+        <input class="form-control" [(ngModel)]="repeatPassword" type="password" name="repeatPassword" minlength="6" maxlength="16" required #repeatPass="ngModel">
+      </div>
+      <p *ngIf="isPasswordError" class="form-error">Passwords don't match</p>
+      <p *ngIf="isError" class="form-error">Incorrect data for registration</p>
+      <p *ngIf="isSuccess" class="form-success">Data has been successfully updated</p>
+      <button class="btn btn-primary w-75" (click)="saveChanges(name.valid && surname.valid && email.valid && pass.valid && repeatPass.valid)">
+        Register
+      </button>
+      <p>Already have an account? <a routerLink="/login">Login</a></p>
+    </div>
+  </div>
+<div class="welcome">
+  <h1>Welcome to NewDrive</h1>
+  <img alt="drive" src="./assets/drive.png">
+</div>
+</main>

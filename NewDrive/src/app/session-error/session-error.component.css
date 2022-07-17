@@ -1,0 +1,16 @@
+.error-background {
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-window {
+  box-sizing: border-box;
+  padding: 50px 100px 50px 100px;
+  box-shadow: 0px 8px 24px 4px rgba(123, 111, 74, 0.15);
+  border-radius: 30px;
+  font-weight: 300;
+  font-size: 28px;
+}
