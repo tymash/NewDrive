@@ -1,4 +1,7 @@
 # File Storage - Web Project
+![alt text](1.png)
+![alt text](2.png)
+#
 - Access to a file by a short link.
 - Shared and restricted files.
 - For registered users - the ability to place files and manage files.
