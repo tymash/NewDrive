@@ -1,5 +1,3 @@
-using FileStorage.BLL.Models.FileModels;
-using FileStorage.BLL.Models.FolderModels;
 using FileStorage.BLL.Models.UserModels;
 
 namespace FileStorage.BLL.Services.Interfaces;
@@ -13,7 +11,4 @@ public interface IUserService
     Task LogoutAsync(); 
     Task EditUserDataAsync(UserEditModel model);
     Task ChangeUserPasswordAsync(UserChangePasswordModel model);
-    Task<IEnumerable<FolderViewModel>> GetUserFoldersAsync(string userId);
-    Task<IEnumerable<FileViewModel>> GetUserItemsAsync(string userId);
-
 }

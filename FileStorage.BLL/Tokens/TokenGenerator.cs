@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using FileStorage.BLL.Models.UserModels;
 using FileStorage.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +15,7 @@ public class TokenGenerator : ITokenGenerator
     private readonly string _issuer;
     private readonly string _audience;
     private readonly string _key;
-    private const int hoursLifeTime = 2;
+    private const int HoursLifeTime = 2;
 
     public TokenGenerator(IConfiguration configuration, UserManager<User> userManager)
     {
@@ -40,7 +39,7 @@ public class TokenGenerator : ITokenGenerator
             issuer: _issuer,
             audience: _audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(hoursLifeTime),
+            expires: DateTime.UtcNow.AddHours(HoursLifeTime),
             signingCredentials: signingsCredentials);
 
         var tokenHandler = new JwtSecurityTokenHandler();

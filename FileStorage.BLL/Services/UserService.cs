@@ -1,6 +1,4 @@
 using AutoMapper;
-using FileStorage.BLL.Models.FileModels;
-using FileStorage.BLL.Models.FolderModels;
 using FileStorage.BLL.Models.UserModels;
 using FileStorage.BLL.Services.Interfaces;
 using FileStorage.BLL.Tokens;
@@ -121,19 +119,5 @@ public class UserService : IUserService
         if (!result.Succeeded)
             throw new FileStorageException("Password change unsuccessful");
 
-    }
-    
-    public async Task<IEnumerable<FolderViewModel>> GetUserFoldersAsync(string userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-        var folders = user.Folders;
-        return _mapperProfile.Map<IEnumerable<FolderViewModel>>(folders);
-    }
-    
-    public async Task<IEnumerable<FileViewModel>> GetUserItemsAsync(string userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-        var items = user.Files;
-        return _mapperProfile.Map<IEnumerable<FileViewModel>>(items);
     }
 }

@@ -3,9 +3,10 @@ using FileStorage.BLL.Models;
 using FileStorage.BLL.Models.FileModels;
 using FileStorage.BLL.Services.Interfaces;
 using FileStorage.BLL.Validation;
-using FileStorage.DAL.Entities;
 using FileStorage.DAL.UnitOfWork;
-using File = FileStorage.DAL.Entities.File;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.StaticFiles;
+
 
 namespace FileStorage.BLL.Services;
 
@@ -13,6 +14,8 @@ public class FileService : IFileService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapperProfile;
+    private readonly string _targetPath = Directory.GetParent(Directory.GetCurrentDirectory()) + "/FileStorage.DAL/Storage/";
+    private const long FileSizeLimit = 500000000;
 
     public FileService(IUnitOfWork unitOfWork, IMapper mapperProfile)
     {
@@ -32,44 +35,63 @@ public class FileService : IFileService
         return _mapperProfile.Map<FileViewModel>(file);
     }
 
-    public async Task<FileViewModel> AddAsync(FileCreateModel model)
+    public async Task<FileViewModel> UploadAsync(string userId, IFormFile file)
     {
-        if (model == null)
-            throw new FileStorageException("No such item found");
-        
-        if (string.IsNullOrEmpty(model.Name))
-            throw new FileStorageException("Name is empty");
+        var formFileContent = await _unitOfWork.FileStorageRepository.ProcessFormFileAsync(file, FileSizeLimit);
+        var fileItem = _unitOfWork.FileStorageRepository.CreateFileItemFormFile(file, userId);
 
-        if (string.IsNullOrEmpty(model.Path))
-            throw new FileStorageException("Path is empty");
         
-        var file = _mapperProfile.Map<File>(model);
-        await _unitOfWork.FilesRepository.AddAsync(file);
+        var fullPath = _targetPath + userId;
+        
+        if (!Directory.Exists(fullPath))
+        {
+            Directory.CreateDirectory(fullPath);
+        }
+
+        await _unitOfWork.FileStorageRepository.CreateFileAsync(fullPath + fileItem.Path, formFileContent);
+
+        await _unitOfWork.FilesRepository.AddAsync(fileItem);
         await _unitOfWork.SaveAsync();
 
-        return _mapperProfile.Map<FileViewModel>(file);
+        var fileDto = _mapperProfile.Map<FileViewModel>(fileItem);
+        return fileDto;
+    }
+    
+    public async Task<(MemoryStream stream, string contentType, string fileName)> DownloadAsync(int fileId)
+    {
+        var file = await _unitOfWork.FilesRepository.GetByIdAsync(fileId);
+
+        if (file == null)
+            throw new FileStorageException($"File for current user does not exist.");
+
+
+        var stream = await _unitOfWork.FileStorageRepository.ReadFileAsync(_targetPath + file.UserId + file.Path);
+        stream.Position = 0;
+
+        new FileExtensionContentTypeProvider().TryGetContentType(file.Name, out var contentType);
+        return (stream, contentType, file.Name)!;
     }
 
     public async Task UpdateAsync(FileEditModel model)
     {
         if (model == null)
             throw new FileStorageException("No such item found");
-        
-        if (string.IsNullOrEmpty(model.Name))
-            throw new FileStorageException("Name is empty");
 
-        if (string.IsNullOrEmpty(model.Path))
-            throw new FileStorageException("Path is empty");
+        var file = await _unitOfWork.FilesRepository.GetByIdAsync(model.Id);
+        file.Extension = string.IsNullOrEmpty(model.Extension) ? file.Extension : model.Extension;
+        file.Name = string.IsNullOrEmpty(model.Name) ? file.Name : model.Name;
+        file.Path = string.IsNullOrEmpty(model.Path) ? file.Path : model.Path;
+        file.IsPublic = model.IsPublic;
+        file.IsRecycled = model.IsRecycled;
         
-        var file = _mapperProfile.Map<File>(model);
         _unitOfWork.FilesRepository.Update(file);
-        await _unitOfWork.SaveAsync();
     }
 
     public async Task DeleteAsync(int id)
     {
+        var file = await _unitOfWork.FilesRepository.GetByIdAsync(id);
         await _unitOfWork.FilesRepository.DeleteByIdAsync(id);
-        await _unitOfWork.SaveAsync();
+        _unitOfWork.FileStorageRepository.DeleteFile(_targetPath + file.UserId + file.Path);
     }
 
     public async Task<IEnumerable<FileViewModel>> GetByFilterAsync(FilterModel model)
@@ -77,7 +99,17 @@ public class FileService : IFileService
         var files = await _unitOfWork.FilesRepository.GetAllAsync();
         if (model.Name != null)
         {
-            files = files.Where(folder => folder.Name.Contains(model.Name));
+            files = files.Where(file => file.Name.Contains(model.Name));
+        }
+        
+        if (model.IsRecycled != null)
+        {
+            files = files.Where(file => file.IsRecycled == model.IsRecycled);
+        }
+        
+        if (model.UserId != null)
+        {
+            files = files.Where(file => file.UserId == model.UserId);
         }
 
         files = model.DateSort switch
@@ -100,7 +132,41 @@ public class FileService : IFileService
             Sort.Descending => files.OrderByDescending(si => si.Size),
             _ => files
         };
-
+        
         return _mapperProfile.Map<IEnumerable<FileViewModel>>(files);
+    }
+
+    public async Task<IEnumerable<FileViewModel>> GetByUserAsync(string userId)
+    {
+        var items = await GetAllAsync();
+        items = items.Where(file => file.UserId == userId);
+        return items;
+    }
+    
+    public async Task MoveFileRecycleBinAsync(int fileId)
+    {
+        var file = await _unitOfWork.FilesRepository.GetByIdAsync(fileId);
+        var editModel = _mapperProfile.Map<FileEditModel>(file);
+        editModel.IsRecycled = true;
+
+        await UpdateAsync(editModel);
+    }
+
+    public async Task RestoreRecycledFileAsync(int fileId)
+    {
+        var file = await _unitOfWork.FilesRepository.GetByIdAsync(fileId);
+        var editModel = _mapperProfile.Map<FileEditModel>(file);
+        editModel.IsRecycled = false;
+
+        await UpdateAsync(editModel);
+    }
+
+    public async Task ChangeFileVisibilityAsync(int fileId)
+    {
+        var file = await _unitOfWork.FilesRepository.GetByIdAsync(fileId);
+        var editModel = _mapperProfile.Map<FileEditModel>(file);
+        editModel.IsPublic = !editModel.IsPublic;
+
+        await UpdateAsync(editModel);
     }
 }

@@ -16,7 +16,7 @@ public static class SeedDbInitializer
         if (!roleManager.RoleExistsAsync("Administrator").Result)
             roleManager.CreateAsync(new IdentityRole("Administrator")).Wait();
     }
-    public static void SeedUsers(UserManager<User> userManager, IFolderService folderService)
+    public static void SeedUsers(UserManager<User> userManager)
     {
         const string mainAdminEmail = "tymash@email.com";
 
@@ -32,8 +32,6 @@ public static class SeedDbInitializer
 
         userManager.CreateAsync(user, "ash2001").Wait();
         userManager.AddToRoleAsync(user, "Administrator").Wait();
-        
-        folderService.CreatePrimaryFolderAsync(user.Id).Wait();
     }
 
 }

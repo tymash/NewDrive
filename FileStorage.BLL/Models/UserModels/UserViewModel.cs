@@ -6,8 +6,6 @@ public class UserViewModel
     public string Email { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
-    
-    public ICollection<int> FoldersIds { get; set; }
     public ICollection<int> FilesIds { get; set; }
     public string Token { get; set; }
 }
