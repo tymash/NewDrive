@@ -26,7 +26,7 @@
       <p *ngIf="isPasswordError" class="form-error">Passwords don't match</p>
       <p *ngIf="isError" class="form-error">Incorrect data for registration</p>
       <p *ngIf="isSuccess" class="form-success">Data has been successfully updated</p>
-      <button class="btn btn-primary w-75" (click)="saveChanges(name.valid && surname.valid && email.valid && pass.valid && repeatPass.valid)">
+      <button class="btn btn-primary w-75" (click)="saveChanges(name.valid && surname.valid && email.valid && pass.valid && repeatPass.valid);">
         Register
       </button>
       <p>Already have an account? <a routerLink="/login">Login</a></p>

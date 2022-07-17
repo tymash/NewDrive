@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './storage.component.html',
   styleUrls: ['./storage.component.css']
 })
+
 export class StorageComponent implements OnInit {
 
   constructor() { }

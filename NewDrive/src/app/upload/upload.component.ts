@@ -6,6 +6,7 @@ import { FileUploader } from 'ng2-file-upload';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.css']
 })
+
 export class UploadComponent implements OnInit {
   hasBaseDropZoneOver = false;
   baseUrl = 'https://localhost:7083/api/';

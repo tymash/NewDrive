@@ -13,6 +13,7 @@ import { FileService } from '../services/file.service';
   templateUrl: './files.component.html',
   styleUrls: ['./files.component.css']
 })
+
 export class FilesComponent implements OnInit {
   isToggled!: boolean;
   files!: FileViewModel[];

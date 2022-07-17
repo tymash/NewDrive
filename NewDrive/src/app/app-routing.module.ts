@@ -11,8 +11,7 @@ import { SessionErrorComponent } from './session-error/session-error.component';
 import { StorageComponent } from './storage/storage.component';
 
 const routes: Routes = [
-  { path: '', component: StorageComponent, canActivate: [AuthService] },
-  { path: '', component: HomeComponent, canActivate: [NonAuthService] },
+  { path: '', component: HomeComponent},
   // {
   //   path: '',
   //   runGuardsAndResolvers: 'always',

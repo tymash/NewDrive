@@ -23,7 +23,7 @@ export class NavComponent implements OnInit {
     this.isAuthenticated = this.userService.isUserAuthenticated();
     this.userRole = this.userService.getAuthenticatedUserRole();
     this.userId = this.userService.getAuthenticatedUserId();
-    this.userService.getById(this.userId)
+    if (this.userId) this.userService.getCurrentUser()
     .subscribe((userModel) => {
       this.name = userModel.name;
       this.surname = userModel.surname;

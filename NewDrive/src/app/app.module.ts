@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {BrowserModule} from '@angular/platform-browser';
 import { JwtModule } from "@auth0/angular-jwt";
 import { RegistrationComponent } from './registration/registration.component';
@@ -60,7 +61,8 @@ export function getToken() {
     }),
     FormsModule,
     BrowserAnimationsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    CommonModule
   ],
   providers: [AuthService, NonAuthService, UserService, FileService, BsModalRef],
   bootstrap: [AppComponent]

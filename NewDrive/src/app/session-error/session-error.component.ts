@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './session-error.component.html',
   styleUrls: ['./session-error.component.css']
 })
+
 export class SessionErrorComponent implements OnInit {
 
   constructor() { }

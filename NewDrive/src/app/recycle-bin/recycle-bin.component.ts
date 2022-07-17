@@ -9,6 +9,7 @@ import { FileService } from '../services/file.service';
   templateUrl: './recycle-bin.component.html',
   styleUrls: ['./recycle-bin.component.css']
 })
+
 export class RecycleBinComponent implements OnInit {
   recycledFiles!: FileViewModel[];
   isToggled: boolean = false;

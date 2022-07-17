@@ -9,9 +9,8 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css']
 })
-export class RegistrationComponent implements OnInit {
 
-  registerIcon = faPenToSquare;
+export class RegistrationComponent implements OnInit {
 
   userRegisterModel: UserRegisterModel = {
     name: "",
@@ -36,20 +35,18 @@ export class RegistrationComponent implements OnInit {
     this.isPasswordError = false;
     this.isConfirmationError = false;
     this.isSuccess = false;
+    console.log('g')
 
     if (!validator) {
+      console.log('c')
       this.isError = true;
       this.isSuccess = false;
       return
     }
 
     if (this.userRegisterModel.password != this.repeatPassword) {
+      console.log('b')
       this.isPasswordError = true;
-      return
-    }
-
-    if (!this.confirmation) {
-      this.isConfirmationError = true;
       return
     }
 
@@ -68,5 +65,6 @@ export class RegistrationComponent implements OnInit {
         }
       });
   }
+
 
 }

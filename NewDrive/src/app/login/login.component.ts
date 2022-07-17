@@ -8,6 +8,7 @@ import { UserService } from '../services/user.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
   @Output() switchEvent = new EventEmitter();
   isError: boolean = false;
