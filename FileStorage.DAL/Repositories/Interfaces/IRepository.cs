@@ -1,6 +1,6 @@
 namespace FileStorage.DAL.Repositories.Interfaces;
 
-public interface IRepository<TId, TEntity> where TEntity : class
+public interface IRepository<TId, TEntity>
 {
     Task<IEnumerable<TEntity>> GetAllAsync();
     Task<TEntity> GetByIdAsync(TId id);

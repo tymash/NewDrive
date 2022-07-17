@@ -1,7 +1,4 @@
 using AutoMapper;
-using FileStorage.BLL.Models;
-using FileStorage.BLL.Models.FolderModels;
-using FileStorage.BLL.Models.StorageItemModels;
 using FileStorage.BLL.Models.UserModels;
 using FileStorage.BLL.Services.Interfaces;
 using FileStorage.BLL.Tokens;
@@ -53,28 +50,28 @@ public class UserService : IUserService
         var result = await _userManager.CreateAsync(user, model.Password);
 
         if (!result.Succeeded)
-            throw new FileStorageException("Registration unsuccessful");
+        {
+            throw new FileStorageException("Registration was unsuccesful");
+        }
         
         await _userManager.AddToRoleAsync(user, "User");
-        await _signInManager.SignInAsync(user, false);
-        
+
         var userViewModel = _mapperProfile.Map<UserViewModel>(user);
-        userViewModel.Token = _tokenGenerator.BuildNewToken(user);
+        userViewModel.Token = await _tokenGenerator.BuildNewTokenAsync(user);
 
         return userViewModel;
-
     }
 
     public async Task<UserViewModel> LoginAsync(UserLoginModel model)
     {
-        var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, true, false);
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user == null)
+            throw new FileStorageException("Incorrect email entered");
+        if (!await _userManager.CheckPasswordAsync(user, model.Password))
+            throw new FileStorageException("Incorrect password entered");
         
-        if (!result.Succeeded)
-            throw new FileStorageException("Login unsuccessful");
-        
-        var user = await _userManager.FindByNameAsync(model.UserName);
         var userViewModel = _mapperProfile.Map<UserViewModel>(user);
-        userViewModel.Token = _tokenGenerator.BuildNewToken(user);
+        userViewModel.Token = await _tokenGenerator.BuildNewTokenAsync(user);
 
         return userViewModel;
     }
@@ -96,10 +93,7 @@ public class UserService : IUserService
         
         if (string.IsNullOrEmpty(model.Surname))
             throw new FileStorageException("Surname is empty");
-        
-        if (string.IsNullOrEmpty(model.UserName))
-            throw new FileStorageException("Username is empty");
-        
+
         if (string.IsNullOrEmpty(model.Email)) 
             throw new FileStorageException("Email is empty");
 
@@ -125,19 +119,5 @@ public class UserService : IUserService
         if (!result.Succeeded)
             throw new FileStorageException("Password change unsuccessful");
 
-    }
-    
-    public async Task<IEnumerable<FolderViewModel>> GetUserFoldersAsync(string userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-        var folders = user.Folders;
-        return _mapperProfile.Map<IEnumerable<FolderViewModel>>(folders);
-    }
-    
-    public async Task<IEnumerable<StorageItemViewModel>> GetUserItemsAsync(string userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-        var items = user.StorageItems;
-        return _mapperProfile.Map<IEnumerable<StorageItemViewModel>>(items);
     }
 }

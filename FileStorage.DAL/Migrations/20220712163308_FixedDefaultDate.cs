@@ -5,52 +5,52 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FileStorage.DAL.Migrations
 {
-    public partial class ChangedToLazyLoading : Migration
+    public partial class FixedDefaultDate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedOn",
-                table: "files",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(2022, 6, 26, 22, 15, 12, 163, DateTimeKind.Local).AddTicks(6420),
-                oldClrType: typeof(DateTime),
-                oldType: "datetime2",
-                oldDefaultValue: new DateTime(2022, 6, 26, 18, 32, 13, 270, DateTimeKind.Local).AddTicks(3170));
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "CreatedOn",
                 table: "Folders",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2022, 6, 26, 22, 15, 12, 163, DateTimeKind.Local).AddTicks(7600),
+                defaultValueSql: "getdate()",
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2022, 6, 26, 18, 32, 13, 270, DateTimeKind.Local).AddTicks(4330));
+                oldDefaultValue: new DateTime(2022, 7, 7, 18, 52, 17, 96, DateTimeKind.Local).AddTicks(7300));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Files",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(2022, 7, 12, 19, 33, 8, 234, DateTimeKind.Local).AddTicks(2470),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldDefaultValue: new DateTime(2022, 7, 7, 18, 52, 17, 96, DateTimeKind.Local).AddTicks(6090));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedOn",
-                table: "files",
-                type: "datetime2",
-                nullable: false,
-                defaultValue: new DateTime(2022, 6, 26, 18, 32, 13, 270, DateTimeKind.Local).AddTicks(3170),
-                oldClrType: typeof(DateTime),
-                oldType: "datetime2",
-                oldDefaultValue: new DateTime(2022, 6, 26, 22, 15, 12, 163, DateTimeKind.Local).AddTicks(6420));
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "CreatedOn",
                 table: "Folders",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2022, 6, 26, 18, 32, 13, 270, DateTimeKind.Local).AddTicks(4330),
+                defaultValue: new DateTime(2022, 7, 7, 18, 52, 17, 96, DateTimeKind.Local).AddTicks(7300),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2022, 6, 26, 22, 15, 12, 163, DateTimeKind.Local).AddTicks(7600));
+                oldDefaultValueSql: "getdate()");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Files",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(2022, 7, 7, 18, 52, 17, 96, DateTimeKind.Local).AddTicks(6090),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldDefaultValue: new DateTime(2022, 7, 12, 19, 33, 8, 234, DateTimeKind.Local).AddTicks(2470));
         }
     }
 }

@@ -46,6 +46,7 @@ public abstract class BaseRepository<TId, T> : IRepository<TId, T> where T : cla
     public virtual void Update(T entity)
     {
         _dbSet.Update(entity);
+        _context.Entry(entity).State = EntityState.Modified;
         _context.SaveChanges();
     }
 }

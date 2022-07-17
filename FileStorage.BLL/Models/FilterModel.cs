@@ -6,4 +6,6 @@ public class FilterModel
     public Sort? DateSort { get; set; }
     public Sort? NameSort { get; set; }
     public Sort? SizeSort { get; set; }
+    public bool? IsRecycled { get; set; }
+    public string? UserId { get; set; }
 }

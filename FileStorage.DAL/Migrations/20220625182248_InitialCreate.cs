@@ -166,7 +166,7 @@ namespace FileStorage.DAL.Migrations
                     IsPrimaryFolder = table.Column<bool>(type: "bit", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RelativePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Path = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -180,7 +180,7 @@ namespace FileStorage.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "StorageItems",
+                name: "files",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -191,20 +191,20 @@ namespace FileStorage.DAL.Migrations
                     Size = table.Column<long>(type: "bigint", nullable: false),
                     IsRecycled = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    RelativePath = table.Column<string>(type: "nvarchar(900)", maxLength: 900, nullable: false),
+                    Path = table.Column<string>(type: "nvarchar(900)", maxLength: 900, nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ParentFolderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StorageItems", x => x.Id);
+                    table.PrimaryKey("PK_files", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StorageItems_AspNetUsers_UserId",
+                        name: "FK_files_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_StorageItems_Folders_ParentFolderId",
+                        name: "FK_files_Folders_ParentFolderId",
                         column: x => x.ParentFolderId,
                         principalTable: "Folders",
                         principalColumn: "Id");
@@ -255,13 +255,13 @@ namespace FileStorage.DAL.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StorageItems_ParentFolderId",
-                table: "StorageItems",
+                name: "IX_files_ParentFolderId",
+                table: "files",
                 column: "ParentFolderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StorageItems_UserId",
-                table: "StorageItems",
+                name: "IX_files_UserId",
+                table: "files",
                 column: "UserId");
         }
 
@@ -283,7 +283,7 @@ namespace FileStorage.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "StorageItems");
+                name: "files");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

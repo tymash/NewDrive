@@ -1,14 +1,14 @@
 using FileStorage.DAL.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using File = FileStorage.DAL.Entities.File;
 
 namespace FileStorage.DAL.Context;
 
 public class AppDbContext : IdentityDbContext<User>
 {
     public DbSet<User> Users { get; set; }
-    public DbSet<StorageItem> StorageItems { get; set; }
-    public DbSet<Folder> Folders { get; set; }
+    public DbSet<File> Files { get; set; }
 
     public AppDbContext()
     {
@@ -20,7 +20,7 @@ public class AppDbContext : IdentityDbContext<User>
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // optionsBuilder.UseSqlServer(@"Server=localhost;Database=fileStorage;User Id=sa;Password=Tymash33;");
+        optionsBuilder.UseSqlServer(@"Server=localhost;Database=fileStorage;User Id=sa;Password=Tymash33;");
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -28,7 +28,6 @@ public class AppDbContext : IdentityDbContext<User>
         base.OnModelCreating(builder);
         
         builder.ApplyConfiguration(new UserConfiguration());
-        builder.ApplyConfiguration(new StorageItemConfiguration());
-        builder.ApplyConfiguration(new FolderConfiguration());
+        builder.ApplyConfiguration(new FileConfiguration());
     }
 }
