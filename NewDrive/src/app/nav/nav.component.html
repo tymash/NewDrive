@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-md bg-primary">
+  <div class="container">
+    <a class="navbar-brand justify-content-start" routerLink='/home'>
+      <h2>
+        <i class="fa fa-cloud-download" aria-hidden="true"></i>
+        NewDrive
+      </h2>
+    </a>
+
+    <ul *ngIf="isAuthenticated" class="navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink='/files'>
+          <h5>
+            <i class="fa fa-user-secret" aria-hidden="true"></i>
+            Private Files
+          </h5>
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink='/public-files'>
+          <h5>
+            <i class="fa fa-share-alt" aria-hidden="true"></i>
+            Public Files
+          </h5>
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/recycle-bin']">
+          <h5>
+            <i class="fa fa-trash" aria-hidden="true"></i>
+            Trash
+          </h5>
+        </a>
+      </li>
+      <li *ngIf ="userRole == 'Admin'" class="nav-item" routerLinkActive="active">
+        <a class="nav-link">
+          <h5>
+            <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+            Users
+          </h5>
+        </a>
+      </li>
+    </ul>
+
+    <div class="dropdown show" *ngIf="isAuthenticated">
+      <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+        Welcome {{surname}} {{name}}
+      </a>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" (click)="logout()"><i class="fa fa-sign-out"></i> Logout</a>
+        <a class="dropdown-item">Hello</a>
+      </div>
+    </div>
+
+    <form *ngIf="!isAuthenticated" #loginForm="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="login()">
+      <button [disabled]="!loginForm.valid" class="btn text-white my-2 my-sm-0" type="submit">Login</button>
+    </form>
+  </div>
+</nav>

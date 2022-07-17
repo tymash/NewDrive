@@ -40,6 +40,17 @@ public class UsersController : ControllerBase
 
         return new ObjectResult(userModel);
     }
+    
+    // GET: api/users/current
+    [HttpGet("current")]
+    [Authorize]
+    public async Task<ActionResult> GetCurrentUser()
+    {
+        var userId = _userManager.GetUserId(User);
+        var userModel = await _userService.GetByIdAsync(userId);
+
+        return new ObjectResult(userModel);
+    }
 
     // POST: api/users/register
     [HttpPost("register")]
@@ -47,7 +58,6 @@ public class UsersController : ControllerBase
     public async Task<ActionResult> Register([FromBody] UserRegisterModel userModel)
     {
         var result = await _userService.RegisterAsync(userModel);
-        var user = _userManager.FindByEmailAsync(userModel.Email);
 
         return new ObjectResult(result);
     }

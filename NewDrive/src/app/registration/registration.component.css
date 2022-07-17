@@ -1,0 +1,59 @@
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  min-height: 600px;
+}
+
+h2 {
+  margin-bottom: 30px;
+}
+
+.registration-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.form-background {
+  margin-top: 50px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-error {
+  margin-top: 15px;
+  color: #FF4F4F;
+}
+
+.form-success {
+  margin-top: 15px;
+  color: #40cd5a;
+}
+
+input.ng-touched.ng-invalid {
+  background-color: #f1c8c8;
+}
+
+.welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.welcome img {
+  width: 150px;
+  height: auto;
+}
+
+.registration-form a {
+  margin-top: 5px;
+  color: #62A1FF;
+  cursor: pointer;
+}

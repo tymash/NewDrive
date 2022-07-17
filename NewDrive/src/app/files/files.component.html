@@ -1,0 +1,76 @@
+<div class="container">
+  <div>
+
+      <form class="form-inline" #form="ngForm" (ngSubmit)="getFiles()" novalidate>
+        <div class="form-group">
+          <label for="maxSize"></label>
+          <input type="text" class="form-control ml-1" id="searchTerm" placeholder="File Name"
+            [(ngModel)]="filter.name" name="searchTerm">
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary bg-primary flo mr-1 mt-2 pull-right">
+            <i class="fa fa-search mx-2" aria-hidden="true"></i>Search
+          </button>
+        </div>
+      </form>
+
+  </div>
+  <div>
+    <table class="table mt-2">
+      <tr>
+        <th style="width: 3%;">
+          <button class="btn bg-primary white" title="Refresh" (click)="getFiles()">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+          </button>
+        </th>
+        <th class="sorting-header" (click)="resetFilters(); toggle(); filter.nameSort = isToggled ? 1 : 2; getFiles()"  style="width: 35%;">
+          Name ({{files?.length}})
+        </th>
+        <th class="sorting-header" (click)="resetFilters(); toggle(); filter.sizeSort = isToggled ? 1 : 2; getFiles()">Size</th>
+        <th>Extension</th>
+        <th>Is Public</th>
+        <th class="sorting-header" (click)="resetFilters(); toggle(); filter.dateSort = isToggled ? 1 : 2; getFiles()">Creation Date</th>
+        <th>Actions</th>
+      </tr>
+      <tr *ngFor="let item of files">
+        <td>
+          <i class="fa fa-file" aria-hidden="true"></i>
+        </td>
+        <td>{{item.name}}</td>
+        <td>{{item.size/1024/1024 | number:'1.0-2'}} MB</td>
+        <td>{{item.extension.substr(1)}}</td>
+        <td>{{item.isPublic ? 'yes' : 'no'}}</td>
+        <td>{{item.createdOn | date: 'medium'}}</td>
+        <td class="actions">
+          <button class="btn bg-info" (click)="openModal(toChangeVisTemplate, item)" title="Share">
+            <i class="fa fa-share-alt" aria-hidden="true"></i>
+          </button>
+          <button class="btn bg-success mx-2" (click)="downloadActualItems(item.id, item.name)"
+            title="Download">
+            <i class="fa fa-download" aria-hidden="true"></i>
+          </button>
+          <button class="btn bg-danger" (click)="openModal(toRecycleBinTemplate, item)" title="To Recycle Bin">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<ng-template #toRecycleBinTemplate>
+  <div class="modal-body text-center">
+    <p>Do you want to <strong>move to Recycle bin</strong> this item?</p>
+    <button type="button" class="btn btn-default" (click)="confirmRecycling()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+  </div>
+</ng-template>
+
+<ng-template #toChangeVisTemplate>
+  <div class="modal-body text-center">
+    <p>Do you want to 
+      <strong> make this file {{ selectedFile!.isPublic ? 'Private' : 'Public' }}</strong></p>
+    <button type="button" class="btn btn-default" (click)="confirmVisChange()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+  </div>
+</ng-template>

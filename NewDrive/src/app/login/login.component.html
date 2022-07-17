@@ -1,0 +1,24 @@
+<div class="login-body" (keydown.enter)="loginUser(email.valid && password.valid)">
+  <div class="login-form">
+    <h1>Login</h1>
+  </div>
+  <div class="login-form">
+    <div class="form-group w-75">
+      <label>Email</label>
+      <input class="form-control" [(ngModel)]="userLoginModel.email" email minlength="3" maxlength="255" name="email"
+        required #email="ngModel">
+    </div>
+    <div class="form-group w-75">
+      <label>Password</label>
+      <input class="form-control" [(ngModel)]="userLoginModel.password" type="password" minlength="6" maxlength="16"
+        name="password" required #password="ngModel" (keydown.enter)="loginUser(email.valid && password.valid)">
+    </div>
+    <div *ngIf="isError" class="login-error">
+      <p>Invalid email address or password</p>
+    </div>
+    <button class="btn btn-primary m-3 w-75" (click)="loginUser(email.valid && password.valid)">
+      Login
+    </button>
+    <p>No account? <a routerLink="/register">Register</a></p>
+  </div>
+</div>
