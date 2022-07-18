@@ -15,7 +15,7 @@ export class RecycleBinComponent implements OnInit {
   isToggled: boolean = false;
   filter!: FilterModel;
   modalRef!: BsModalRef;
-  selectedFile?: FileViewModel;
+  selectedFile?: FileEditModel;
 
   constructor(private fileService: FileService,
     private modalService: BsModalService) { }
