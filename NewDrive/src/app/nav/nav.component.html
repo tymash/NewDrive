@@ -32,23 +32,31 @@
           </h5>
         </a>
       </li>
-      <li *ngIf ="userRole == 'Admin'" class="nav-item" routerLinkActive="active">
-        <a class="nav-link">
+      <li *ngIf ="userRole == 'Administrator'" class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink='/user-management'>
           <h5>
             <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-            Users
+            All Users
+          </h5>
+        </a>
+      </li>
+      <li *ngIf="userRole == 'Administrator'" class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink='/moderate-files'>
+          <h5>
+            <i class="fa fa-file" aria-hidden="true"></i>
+            All Files
           </h5>
         </a>
       </li>
     </ul>
 
     <div class="dropdown show" *ngIf="isAuthenticated">
-      <a class="dropdown-toggle" role="button" data-bs-toggle="dropdown" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
+      <a class="dropdown-toggle link-white" role="button" data-bs-toggle="dropdown" id="dropdownMenuLink" aria-haspopup="true" aria-expanded="false">
         Welcome {{surname}} {{name}}
       </a>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-        <a class="dropdown-item" (click)="logout()"><i class="fa fa-sign-out"></i> Logout</a>
-        <a class="dropdown-item">Hello</a>
+        <a class="dropdown-item text-dark" routerLink="/my-profile"><i style="color: black;" class="fa fa-user-circle-o"></i> Profile</a>
+        <a class="dropdown-item text-dark" role="button" (click)="logout()"><i style="color: black;" class="fa fa-sign-out"></i> Logout</a>
       </div>
     </div>
 

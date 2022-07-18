@@ -43,8 +43,8 @@
         <td>{{item.extension.substr(1)}}</td>
         <td>{{item.createdOn | date: 'medium'}}</td>
         <td class="actions">
-          <button class="btn bg-info" (click)="openModal(toChangeVisTemplate, item)" title="Restrict">
-            <i class="fa fa-ban" aria-hidden="true"></i>
+          <button class="btn bg-warning" (click)="openModal(toChangeVisTemplate, item)" title="Restrict">
+            <i class="fa fa-user-secret" aria-hidden="true"></i>
           </button>
           <button class="btn bg-success" (click)="openModal(toDownloadLink, item)" title="Get Link">
             <i class="fa fa-download" aria-hidden="true"></i>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import {UserRegisterModel} from "../models/user.model";
@@ -11,7 +11,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 })
 
 export class RegistrationComponent implements OnInit {
-  @Output() cancelRegister = new EventEmitter();
+
   userRegisterModel: UserRegisterModel = {
     name: "",
     surname: "",
