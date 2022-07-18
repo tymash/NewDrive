@@ -85,6 +85,7 @@ public class FileService : IFileService
         file.IsRecycled = model.IsRecycled;
         
         _unitOfWork.FilesRepository.Update(file);
+        await _unitOfWork.SaveAsync();
     }
 
     public async Task DeleteAsync(int id)
@@ -105,6 +106,11 @@ public class FileService : IFileService
         if (model.IsRecycled != null)
         {
             files = files.Where(file => file.IsRecycled == model.IsRecycled);
+        }
+        
+        if (model.IsPublic != null)
+        {
+            files = files.Where(file => file.IsPublic == model.IsPublic);
         }
         
         if (model.UserId != null)
@@ -148,6 +154,7 @@ public class FileService : IFileService
         var file = await _unitOfWork.FilesRepository.GetByIdAsync(fileId);
         var editModel = _mapperProfile.Map<FileEditModel>(file);
         editModel.IsRecycled = true;
+        editModel.IsPublic = false;
 
         await UpdateAsync(editModel);
     }
@@ -168,5 +175,12 @@ public class FileService : IFileService
         editModel.IsPublic = !editModel.IsPublic;
 
         await UpdateAsync(editModel);
+    }
+
+    public async Task<FileViewModel> GetByFileName(string fileName, string userId)
+    {
+        var files = await GetByUserAsync(userId);
+        var file = files.SingleOrDefault(item => item.Name == fileName);
+        return file ?? throw new FileStorageException("No such file");
     }
 }

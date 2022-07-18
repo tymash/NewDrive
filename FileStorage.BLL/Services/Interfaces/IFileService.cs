@@ -18,4 +18,5 @@ public interface IFileService
     Task ChangeFileVisibilityAsync(int fileId);
     Task MoveFileRecycleBinAsync(int fileId);
     Task RestoreRecycledFileAsync(int fileId);
+    Task<FileViewModel> GetByFileName(string fileName, string userId);
 }
