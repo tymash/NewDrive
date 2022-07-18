@@ -1,0 +1,22 @@
+<div class="container mt-5">
+  <div class="row">
+    <table class="table">
+      <tr>
+        <th style="width: 3%;"></th>
+        <th>User Name</th>
+        <th>Surname</th>
+        <th>Name</th>
+        <th>Number of files</th>
+      </tr>
+      <tr *ngFor="let user of users">
+        <td>
+          <i class="fa fa-user" aria-hidden="true"></i>
+        </td>
+        <td><a routerLink="../profile/{{user.id}}">{{user.email}}</a></td>
+        <td>{{user.surname}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.filesIds.length}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

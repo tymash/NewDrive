@@ -1,0 +1,105 @@
+<div class="container mt-5">
+  <div>
+
+    <form class="form-inline" #form="ngForm" (ngSubmit)="getFiles()" novalidate>
+      <div class="form-group">
+        <label for="maxSize"></label>
+        <input type="text" class="form-control ml-1" id="searchTerm" placeholder="File Name" [(ngModel)]="filter.name"
+          name="searchTerm">
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary bg-primary flo mr-1 mt-2 pull-right">
+          <i class="fa fa-search mx-2" aria-hidden="true"></i>Search
+        </button>
+      </div>
+    </form>
+
+  </div>
+
+  <div>
+    <table class="table mt-5">
+      <tr>
+        <th style="width: 3%;">
+          <button class="btn bg-primary" title="Refresh" (click)="getFiles()">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+          </button>
+        </th>
+        <th class="sorting-header" (click)="resetFilters(); toggle(); filter.nameSort = isToggled ? 2 : 1; getFiles()" style="width: 30%;">Name</th>
+        <th class="sorting-header" (click)="resetFilters(); toggle(); filter.sizeSort = isToggled ? 2 : 1; getFiles()">Size</th>
+        <th>Extension</th>
+        <th>Is Public</th>
+        <th>Is Recycled</th>
+        <th>Owner</th>
+        <th class="sorting-header" (click)="resetFilters(); toggle(); filter.dateSort = isToggled ? 1 : 2; getFiles()">Creation Date</th>
+        <th style="text-align: center;">Actions</th>
+      </tr>
+      <tr *ngFor="let item of files">
+        <td>
+          <i class="fa fa-file" aria-hidden="true"></i>
+        </td>
+        <td>{{item.name}}</td>
+        <td>{{item.size/1024/1024 | number:'1.0-2'}} MB</td>
+        <td>{{item.extension.substr(1)}}</td>
+        <td>{{item.isPublic}}</td>
+        <td>{{item.isRecycled}}</td>
+        <td><a routerLink="../profile/{{item.user.id}}">{{item.user.email}}</a></td>
+        <td>{{item.createdOn | date: 'medium'}}</td>
+        <td class="actions">
+          <button [hidden]="!item.isPublic" class="btn bg-info" 
+          (click)="openModal(toChangeVis, item)" title="Make public">
+            <i class="fa fa-share-alt" aria-hidden="true"></i>
+          </button>
+          <button [hidden]="item.isPublic" class="btn bg-warning"
+            (click)="openModal(toChangeVis, item)" title="Make private">
+            <i class="fa fa-user-secret" aria-hidden="true"></i>
+          </button>
+          <button [hidden]="!item.isRecycled" class="btn bg-primary"
+            (click)="openModal(restoreTemplate, item)" title="Restore">
+            <i class="fa fa-reply" aria-hidden="true"></i>
+          </button>
+          <button [hidden]="item.isRecycled" class="btn bg-danger"
+            (click)="openModal(toRecycleBinTemplate, item)" title="To Recycle Bin">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+          <button class="btn bg-danger" (click)="openModal(deleteTemplate, item)" title="Delete">
+            <i class="fa fa-ban" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+
+</div>
+
+<ng-template #toChangeVis>
+  <div class="modal-body text-center">
+    <p>Do you want to <strong>Change visibility</strong> this item?</p>
+    <button type="button" class="btn btn-default" (click)="confirmVisChange()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+  </div>
+</ng-template>
+
+<ng-template #toRecycleBinTemplate>
+  <div class="modal-body text-center">
+    <p>Do you want to <strong>move to Recycle bin</strong> this item?</p>
+    <button type="button" class="btn btn-default" (click)="confirmRecycle()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+  </div>
+</ng-template>
+
+<ng-template #restoreTemplate>
+  <div class="modal-body text-center">
+    <p>Do you want to <strong>Restore</strong> this item?</p>
+    <button type="button" class="btn btn-default" (click)="confirmRestore()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+  </div>
+</ng-template>
+
+<ng-template #deleteTemplate>
+  <div class="modal-body text-center">
+    <p>Do you want to <strong>Delete</strong> this item?</p>
+    <button type="button" class="btn btn-default" (click)="confirmDelete()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()">No</button>
+  </div>
+</ng-template>

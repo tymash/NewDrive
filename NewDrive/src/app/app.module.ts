@@ -28,6 +28,10 @@ import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
 import { SessionErrorComponent } from './session-error/session-error.component';
 import { PublicComponent } from './public/public.component';
 import { SharedDownloadComponent } from './shared-download/shared-download.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ModerateFilesComponent } from './moderate-files/moderate-files.component';
+import { ModerateUsersComponent } from './moderate-users/moderate-users.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 export function getToken() {
   return sessionStorage.getItem('token');
@@ -46,7 +50,11 @@ export function getToken() {
     RecycleBinComponent,
     SessionErrorComponent,
     PublicComponent,
-    SharedDownloadComponent
+    SharedDownloadComponent,
+    ProfileComponent,
+    ModerateFilesComponent,
+    ModerateUsersComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,

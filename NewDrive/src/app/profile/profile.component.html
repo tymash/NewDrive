@@ -1,0 +1,46 @@
+<div>
+  <h1>{{userEditModel.surname}} {{userEditModel.name}}'s Profile</h1>
+
+  <div class="profile-body">
+    <div class="form-group w-75">
+      <label>Name</label>
+      <input class="form-control" [(ngModel)]="userEditModel.name" name="name" pattern="[a-zA-Z]+" minlength="2"
+        maxlength="30" required #name="ngModel">
+    </div>
+    <div class="form-group w-75">
+      <label>Surname</label>
+      <input class="form-control" [(ngModel)]="userEditModel.surname" name="surname" pattern="[a-zA-Z]+" minlength="2"
+        maxlength="30" required #surname="ngModel">
+    </div>
+    <div class="form-group w-75">
+      <label>Email</label>
+      <input class="form-control" [(ngModel)]="userEditModel.email" email name="email" required #email="ngModel">
+    </div>
+    <p *ngIf="isError" class="form-error">Incorrect data</p>
+    <p *ngIf="isSuccess" class="form-success">Data has been successfully changed</p>
+    <button class="btn btn-primary w-75" (click)="saveChanges(name.valid && surname.valid)">
+      Save changes
+    </button>
+  </div>
+  <div *ngIf="userId == currentUserId" class="profile-body">
+    <div class="form-group w-75">
+      <label>New Password</label>
+      <input class="form-control" [(ngModel)]="userChangePasswordModel.password" type="password" name="newPassword"
+        minlength="6" maxlength="16" required #newPass="ngModel">
+    </div>
+    <div class="form-group w-75">
+      <label>Repeat Password</label>
+      <input class="form-control" [(ngModel)]="repeatPassword" type="password" name="repeatPassword" minlength="6"
+        maxlength="16" required #repeatPass="ngModel">
+    </div>
+    <p *ngIf="isSuccess" class="form-success">Password has been successfully updated</p>
+    <p *ngIf="isError" class="form-error">Incorrect password for changing</p>
+    <p *ngIf="isPasswordError" class="form-error">Passwords don't match</p>
+    <button class="btn btn-primary w-75" (click)="changePassword(newPass.valid && repeatPass.valid)">
+      Change password
+    </button>
+    <button class="btn btn-outline-primary w-75" (click)="logout()">
+      Logout
+    </button>
+  </div>
+</div>
