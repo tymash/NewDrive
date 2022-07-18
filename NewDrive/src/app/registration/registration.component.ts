@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import {UserRegisterModel} from "../models/user.model";
@@ -11,7 +11,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 })
 
 export class RegistrationComponent implements OnInit {
-
+  @Output() cancelRegister = new EventEmitter();
   userRegisterModel: UserRegisterModel = {
     name: "",
     surname: "",
@@ -22,7 +22,6 @@ export class RegistrationComponent implements OnInit {
   confirmation: boolean = false;
   isError: boolean = false;
   isPasswordError: boolean = false;
-  isConfirmationError: boolean = false;
   isSuccess: boolean = false;
 
   constructor(private userService: UserService, private router: Router) { }
@@ -33,7 +32,6 @@ export class RegistrationComponent implements OnInit {
   saveChanges(validator: boolean | null) {
     this.isError = false;
     this.isPasswordError = false;
-    this.isConfirmationError = false;
     this.isSuccess = false;
     console.log('g')
 
