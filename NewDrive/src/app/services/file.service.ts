@@ -13,16 +13,28 @@ export class FileService {
 
   constructor(private http: HttpClient) { }
 
-  userFiles(filter: FilterModel) {
+  getAllFiles(filter: FilterModel) {
     let params = new HttpParams();
     params = params.append('name', filter.name);
-    params = params.append('isRecycled', filter.isRecycled);
-    params = params.append('isPublic', filter.isPublic);
+    if (filter.isRecycled != undefined) params = params.append('isRecycled', filter.isRecycled);
+    if (filter.isPublic != undefined) params = params.append('isPublic', filter.isPublic);
     params = params.append('dateSort', filter.dateSort);
     params = params.append('nameSort', filter.nameSort);
     params = params.append('sizeSort', filter.sizeSort);
-    params = params.append('userId', filter.userId);
-    return this.http.get<FileViewModel[]>(this.url, { params: params })
+    if (filter.userId != undefined) params = params.append('userId', filter.userId);
+    return this.http.get<FileViewModel[]>(this.url, { params: params });
+  }
+
+  userFiles(filter: FilterModel) {
+    let params = new HttpParams();
+    params = params.append('name', filter.name);
+    if (filter.isRecycled != undefined) params = params.append('isRecycled', filter.isRecycled);
+    if (filter.isPublic != undefined) params = params.append('isPublic', filter.isPublic);
+    params = params.append('dateSort', filter.dateSort);
+    params = params.append('nameSort', filter.nameSort);
+    params = params.append('sizeSort', filter.sizeSort);
+    if (filter.userId != undefined) params = params.append('userId', filter.userId);
+    return this.http.get<FileViewModel[]>(this.url + '/user', { params: params });
   }
 
   downloadFile(fileId: number){

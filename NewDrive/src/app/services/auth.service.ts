@@ -14,7 +14,7 @@ export class AuthService implements CanActivate {
       return true;
     }
 
-    this.router.navigate(['session-error']);
+    this.router.navigate(['register']);
     return false;
   }
 }

@@ -27,7 +27,7 @@ export class UserService {
   }
 
   update(userId: string, userModel: UserEditModel) {
-    return this.http.put<UserViewModel>(this.url + '/edit/' + userId, userModel);
+    return this.http.put(this.url + '/edit/' + userId, userModel);
   }
 
   changePassword(userModel: UserChangePasswordModel) {
@@ -36,6 +36,10 @@ export class UserService {
 
   getById(userId: string) {
     return this.http.get<UserViewModel>(this.url + '/' + userId);
+  }
+
+  getAll() {
+    return this.http.get<UserViewModel[]>(this.url);
   }
 
   getCurrentUser() {
@@ -74,6 +78,5 @@ export class UserService {
     else
       return '';
   }
-
 
 }
