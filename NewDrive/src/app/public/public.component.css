@@ -10,5 +10,11 @@
 .actions {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.modal-body a {
+  word-wrap: break-word;
 }

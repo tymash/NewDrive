@@ -1,20 +1,17 @@
-import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {saveAs} from 'file-saver';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Subscription } from 'rxjs';
 import { FileEditModel, FileViewModel } from '../models/file.model';
 import { FilterModel } from '../models/filter.model';
 import { FileService } from '../services/file.service';
 
 @Component({
-  selector: 'app-files',
-  templateUrl: './files.component.html',
-  styleUrls: ['./files.component.css']
+  selector: 'app-public',
+  templateUrl: './public.component.html',
+  styleUrls: ['./public.component.css']
 })
 
-export class FilesComponent implements OnInit {
+export class PublicComponent implements OnInit {
   isToggled!: boolean;
   files!: FileViewModel[];
   selectedFile?: FileEditModel;
@@ -24,9 +21,10 @@ export class FilesComponent implements OnInit {
   constructor(private fileService: FileService, private modalService: BsModalService) { }
 
   ngOnInit() {
+    console.log("a");
     this.filter = {
       isRecycled: false,
-      isPublic: false,
+      isPublic: true,
       name: "",
       dateSort: 0,
       nameSort: 0,
@@ -54,7 +52,7 @@ export class FilesComponent implements OnInit {
 
   openModal(template: TemplateRef<any>, file: FileEditModel) {
     this.selectedFile = file;
-    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+    this.modalRef = this.modalService.show(template, { class: 'modal-dialog-centered' });
   }
 
   confirmRecycling(): void {
@@ -77,22 +75,22 @@ export class FilesComponent implements OnInit {
 
   downloadActualItems(id: number, name: string) {
     this.fileService.downloadFile(id)
-    .subscribe({
-      next: (data) => {
-        const downloadedFile = new Blob([data], { type: data.type });
-        const a = document.createElement('a');
-        a.setAttribute('style', 'display:none;');
-        document.body.appendChild(a);
-        a.download = name;
-        a.href = URL.createObjectURL(downloadedFile);
-        a.target = '_blank';
-        a.click();
-        document.body.removeChild(a);
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
+      .subscribe({
+        next: (data) => {
+          const downloadedFile = new Blob([data], { type: data.type });
+          const a = document.createElement('a');
+          a.setAttribute('style', 'display:none;');
+          document.body.appendChild(a);
+          a.download = name;
+          a.href = URL.createObjectURL(downloadedFile);
+          a.target = '_blank';
+          a.click();
+          document.body.removeChild(a);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      });
   }
 
   private moveToRecycleBin(id: number) {

@@ -23,6 +23,7 @@ export class RecycleBinComponent implements OnInit {
   ngOnInit() {
     this.filter = {
       isRecycled: true,
+      isPublic: false,
       name: "",
       dateSort: 0,
       nameSort: 0,

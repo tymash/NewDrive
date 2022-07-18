@@ -17,6 +17,7 @@ export class FileService {
     let params = new HttpParams();
     params = params.append('name', filter.name);
     params = params.append('isRecycled', filter.isRecycled);
+    params = params.append('isPublic', filter.isPublic);
     params = params.append('dateSort', filter.dateSort);
     params = params.append('nameSort', filter.nameSort);
     params = params.append('sizeSort', filter.sizeSort);
@@ -26,6 +27,10 @@ export class FileService {
 
   downloadFile(fileId: number){
     return this.http.get(this.url + '/download/' + fileId, { responseType: 'blob' });
+  }
+
+  downloadPublicFile(fileId: number) {
+    return this.http.get(this.url + '/download/shared/' + fileId, { responseType: 'blob' });
   }
 
   recycleFile(fileId: number){

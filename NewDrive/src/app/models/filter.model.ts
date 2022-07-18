@@ -4,6 +4,7 @@ export interface FilterModel {
   nameSort: Sort,
   sizeSort: Sort,
   isRecycled: boolean,
+  isPublic: boolean,
   userId: string
 }
 

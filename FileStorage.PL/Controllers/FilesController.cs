@@ -80,6 +80,23 @@ public class FilesController : ControllerBase
         }
     }
     
+    [HttpGet("download/shared/{fileId}"), DisableRequestSizeLimit]
+    public async Task<IActionResult> PublicDownload(int fileId)
+    {
+        var file = await _fileService.GetByIdAsync(fileId);
+        if (!file.IsPublic) return Unauthorized();
+        try
+        {
+            var result = await _fileService.DownloadAsync(fileId);
+
+            return File(result.stream, result.contentType, result.fileName);
+        }
+        catch (FileStorageException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+    
     // PUT: api/items/update/1
     [HttpPut("update/{itemId}")]
     [Authorize]

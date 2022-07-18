@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { FilesComponent } from './files/files.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { PublicComponent } from './public/public.component';
 import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
 import {RegistrationComponent} from "./registration/registration.component";
 import { AuthService } from './services/auth.service';
 import {NonAuthService} from "./services/non-auth.service";
 import { SessionErrorComponent } from './session-error/session-error.component';
+import { SharedDownloadComponent } from './shared-download/shared-download.component';
 import { StorageComponent } from './storage/storage.component';
 
 const routes: Routes = [
@@ -24,6 +26,8 @@ const routes: Routes = [
   //     { path: 'moderate', component: ModerateItemsComponent, data: { roles: ['Moderator'] } }
   //   ]
   // },
+  { path: 'public', component: PublicComponent},
+  { path: 'shared/:id/:name', component: SharedDownloadComponent},
   { path: 'files', component: StorageComponent},
   { path: 'session-error', component: SessionErrorComponent},
   { path: 'recycle-bin', component: RecycleBinComponent },

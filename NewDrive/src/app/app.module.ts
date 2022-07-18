@@ -26,6 +26,8 @@ import { UploadComponent } from './upload/upload.component';
 import { StorageComponent } from './storage/storage.component';
 import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
 import { SessionErrorComponent } from './session-error/session-error.component';
+import { PublicComponent } from './public/public.component';
+import { SharedDownloadComponent } from './shared-download/shared-download.component';
 
 export function getToken() {
   return sessionStorage.getItem('token');
@@ -42,7 +44,9 @@ export function getToken() {
     UploadComponent,
     StorageComponent,
     RecycleBinComponent,
-    SessionErrorComponent
+    SessionErrorComponent,
+    PublicComponent,
+    SharedDownloadComponent
   ],
   imports: [
     BrowserModule,
