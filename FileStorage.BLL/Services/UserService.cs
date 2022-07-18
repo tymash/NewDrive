@@ -88,15 +88,11 @@ public class UserService : IUserService
         if (user == null)
             throw new FileStorageException("No such user found");
         
-        if (string.IsNullOrEmpty(model.Name))
-            throw new FileStorageException("Name is empty");
+        user.Email = string.IsNullOrEmpty(model.Email) ? user.Email : model.Email;
+        user.UserName = string.IsNullOrEmpty(model.Email) ? user.Email : model.Email;
+        user.Name = string.IsNullOrEmpty(model.Name) ? user.Name : model.Name;
+        user.Surname = string.IsNullOrEmpty(model.Surname) ? user.Surname : model.Surname;
         
-        if (string.IsNullOrEmpty(model.Surname))
-            throw new FileStorageException("Surname is empty");
-
-        if (string.IsNullOrEmpty(model.Email)) 
-            throw new FileStorageException("Email is empty");
-
         var result = await _userManager.UpdateAsync(user);
 
         if (!result.Succeeded)
