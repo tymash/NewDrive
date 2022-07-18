@@ -3,6 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { FilesComponent } from './files/files.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { ModerateFilesComponent } from './moderate-files/moderate-files.component';
+import { ModerateUsersComponent } from './moderate-users/moderate-users.component';
+import { ProfileComponent } from './profile/profile.component';
 import { PublicComponent } from './public/public.component';
 import { RecycleBinComponent } from './recycle-bin/recycle-bin.component';
 import {RegistrationComponent} from "./registration/registration.component";
@@ -14,25 +17,17 @@ import { StorageComponent } from './storage/storage.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent},
-  // {
-  //   path: '',
-  //   runGuardsAndResolvers: 'always',
-  //   canActivate: [AuthGuard],
-  //   children: [
-  //     { path: 'storage-items', component: StorageTabsComponent },
-  //     { path: 'shared-items', component: SharedItemsComponent },
-  //     { path: 'recycle-bin', component: RecycleBinComponent },
-  //     { path: 'admin', component: AdminPanelComponent, data: { roles: ['Admin'] } },
-  //     { path: 'moderate', component: ModerateItemsComponent, data: { roles: ['Moderator'] } }
-  //   ]
-  // },
-  { path: 'public', component: PublicComponent},
+  { path: 'public', component: PublicComponent, canActivate: [AuthService]},
+  { path: 'moderate-files', component: ModerateFilesComponent, canActivate: [AuthService] },
   { path: 'shared/:id/:name', component: SharedDownloadComponent},
-  { path: 'files', component: StorageComponent},
+  { path: 'files', component: StorageComponent, canActivate: [AuthService]},
   { path: 'session-error', component: SessionErrorComponent},
-  { path: 'recycle-bin', component: RecycleBinComponent },
+  { path: 'recycle-bin', component: RecycleBinComponent, canActivate: [AuthService]},
   { path: 'register', component: RegistrationComponent, canActivate: [NonAuthService]},
-  { path: 'login', component: LoginComponent, canActivate: [NonAuthService] },
+  { path: 'login', component: LoginComponent, canActivate: [NonAuthService]},
+  { path: 'user-management', component: ModerateUsersComponent, canActivate: [AuthService]},
+  { path: 'profile/:id', component: ProfileComponent, canActivate: [AuthService] },
+  { path: 'my-profile', component: ProfileComponent, canActivate: [AuthService] },
   { path: '**', component: HomeComponent }];
 
 @NgModule({
