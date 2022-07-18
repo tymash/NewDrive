@@ -1,3 +1,5 @@
+import { UserViewModel } from "./user.model"
+
 export interface FileCreateModel {
   userId: string,
   extension: string,
@@ -10,6 +12,7 @@ export interface FileCreateModel {
 export interface FileViewModel {
   id: number,
   userId: string,
+  user: UserViewModel,
   createdOn: Date,
   extension: string,
   name: string,
@@ -21,11 +24,8 @@ export interface FileViewModel {
 
 export interface FileEditModel {
   id: number,
-  userId: string,
-  createdOn: Date,
   extension: string,
   name: string,
-  size: number,
   isRecycled: boolean,
   isPublic: boolean,
   path: string

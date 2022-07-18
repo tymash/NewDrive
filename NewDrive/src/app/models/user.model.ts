@@ -11,14 +11,14 @@ export interface UserLoginModel {
 }
 
 export interface UserEditModel {
-  id: number,
-  name: string,
-  surname: string,
-  email: string
+  id?: string,
+  name?: string,
+  surname?: string,
+  email?: string
 }
 
 export interface UserChangePasswordModel {
-  id: number,
+  id: string,
   password: string
 }
 

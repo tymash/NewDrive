@@ -3,9 +3,9 @@ export interface FilterModel {
   dateSort: Sort,
   nameSort: Sort,
   sizeSort: Sort,
-  isRecycled: boolean,
-  isPublic: boolean,
-  userId: string
+  isRecycled?: boolean,
+  isPublic?: boolean,
+  userId?: string
 }
 
 enum Sort {
