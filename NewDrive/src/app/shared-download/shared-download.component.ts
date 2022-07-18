@@ -9,6 +9,7 @@ import { FileService } from '../services/file.service';
 })
 export class SharedDownloadComponent implements OnInit {
   fileName!: string;
+  result: boolean = true;
 
   constructor(private route: ActivatedRoute, private fileService: FileService) {
     this.route.params.subscribe(params => {
@@ -39,6 +40,7 @@ export class SharedDownloadComponent implements OnInit {
         },
         error: (error) => {
           console.log(error);
+          this.result = false;
         }
       });
   }

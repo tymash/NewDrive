@@ -1,5 +1,6 @@
 <div class="download-body">
   <div>
-    <h1>File {{fileName}} is successfully downloaded!</h1>
+    <h1 *ngIf="result">File {{fileName}} is successfully downloaded!</h1>
+    <h1 *ngIf="!result">File could not be downloaded!</h1>
   </div>
 </div>
