@@ -31,6 +31,7 @@ public class AutomapperProfile : Profile
 
         CreateMap<File, FileViewModel>()
             .ForMember(sim => sim.UserId, mo => mo.MapFrom(si => si.UserId))
+            .ForMember(sim => sim.User, mo => mo.MapFrom(si => si.User))
             .ReverseMap();
         
         CreateMap<File, FileCreateModel>()

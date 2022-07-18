@@ -4,6 +4,7 @@ using FileStorage.BLL.Models.FileModels;
 using FileStorage.BLL.Services.Interfaces;
 using FileStorage.BLL.Validation;
 using FileStorage.DAL.Entities;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,17 +17,33 @@ public class FilesController : ControllerBase
 {
     private readonly IFileService _fileService;
     private readonly UserManager<User> _userManager;
+    
+    private readonly IValidator<FileCreateModel> _createValidator;
+    private readonly IValidator<FileEditModel> _editValidator;
 
-    public FilesController(IFileService fileService, UserManager<User> userManager)
+    public FilesController(IFileService fileService, UserManager<User> userManager, 
+        IValidator<FileCreateModel> createValidator, IValidator<FileEditModel> editValidator)
     {
         _fileService = fileService;
         _userManager = userManager;
+        _createValidator = createValidator;
+        _editValidator = editValidator;
     }
     
     // GET: api/items
     [HttpGet]
     [Authorize]
     public async Task<ActionResult<IEnumerable<FileViewModel>>> GetByFilter([FromQuery] FilterModel filterModel)
+    {
+        var files = await _fileService.GetByFilterAsync(filterModel);
+
+        return new ObjectResult(files);
+    }
+    
+    // GET: api/items
+    [HttpGet("user")]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<FileViewModel>>> GetUserFilesByFilter([FromQuery] FilterModel filterModel)
     {
         var userId = _userManager.GetUserId(User);
         filterModel.UserId = userId;
@@ -54,7 +71,7 @@ public class FilesController : ControllerBase
         var userId = _userManager.GetUserId(User);
         var files = Request.Form.Files;
         var filesModels = new List<FileViewModel>();
-        
+
 
         foreach (var file in files)
         {
@@ -97,13 +114,15 @@ public class FilesController : ControllerBase
         }
     }
     
-    // PUT: api/items/update/1
-    [HttpPut("update/{itemId}")]
+    // PUT: api/items/edit/1
+    [HttpPut("edit/{itemId}")]
     [Authorize]
-    public async Task<ActionResult> Update(int itemId, [FromBody] FileEditModel fileModel)
+    public async Task<ActionResult> Edit(int itemId, [FromBody] FileEditModel fileModel)
     {
-        // fileModel.Id = itemId;
-        var currentUser = await _userManager.FindByNameAsync(User.Identity?.Name);
+        fileModel.Id = itemId;
+        var currentUser = await _userManager.GetUserAsync(User);
+
+        await _editValidator.ValidateAndThrowAsync(fileModel);
 
         if (currentUser.Files.All(si => si.Id != itemId) && !await _userManager.IsInRoleAsync(currentUser, "Administrator"))
             return StatusCode((int)HttpStatusCode.Forbidden);
@@ -114,38 +133,28 @@ public class FilesController : ControllerBase
     }
     
     // POST: api/items/delete/1
-    [HttpDelete("delete/{itemId}")]
+    [HttpDelete("delete/{fileId}")]
     [Authorize]
-    public async Task<ActionResult> Delete(int itemId)
+    public async Task<ActionResult> Delete(int fileId)
     {
-        var userId = _userManager.GetUserId(User);
-        var file = await _fileService.GetByIdAsync(itemId);
+        var currentUser = await _userManager.GetUserAsync(User);
+        var file = _fileService.GetByIdAsync(fileId);
+        if (currentUser.Id != file.Result.UserId && !await _userManager.IsInRoleAsync(currentUser, "Administrator")) 
+            return Unauthorized();
 
-        if (userId != file.UserId) return Unauthorized();
-
-        await _fileService.DeleteAsync(itemId);
+        await _fileService.DeleteAsync(fileId);
 
         return Ok();
     }
-    
-    [HttpGet("user")]
-    [Authorize]
-    public async Task<IActionResult> GetByUser()
-    {
-        var userId = _userManager.GetUserId(User);
 
-        var files = await _fileService.GetByUserAsync(userId);
-
-        return new ObjectResult(files);
-    }
-    
     [Authorize]
     [HttpPut("{fileId}/recycle")]
     public async Task<IActionResult> MoveToRecycleBinAsync(int fileId)
     {
-        var userId = _userManager.GetUserId(User);
-        var file = await _fileService.GetByIdAsync(fileId);
-        if (userId != file.UserId) return Unauthorized();
+        var currentUser = await _userManager.GetUserAsync(User);
+        var file = _fileService.GetByIdAsync(fileId);
+        if (currentUser.Id != file.Result.UserId && !await _userManager.IsInRoleAsync(currentUser, "Administrator")) 
+            return Unauthorized();
 
         try
         {
@@ -163,9 +172,10 @@ public class FilesController : ControllerBase
     [HttpPut("{fileId}/restore")]
     public async Task<IActionResult> RestoreFileAsync(int fileId)
     {
-        var userId = _userManager.GetUserId(User);
+        var currentUser = await _userManager.GetUserAsync(User);
         var file = _fileService.GetByIdAsync(fileId);
-        if (userId != file.Result.UserId) return Unauthorized();
+        if (currentUser.Id != file.Result.UserId && !await _userManager.IsInRoleAsync(currentUser, "Administrator")) 
+            return Unauthorized();
 
         try
         {
@@ -183,9 +193,10 @@ public class FilesController : ControllerBase
     [HttpPut("{fileId}/changePublic")]
     public async Task<IActionResult> ChangeVisibilityAsync(int fileId)
     {
-        var userId = _userManager.GetUserId(User);
+        var currentUser = await _userManager.GetUserAsync(User);
         var file = _fileService.GetByIdAsync(fileId);
-        if (userId != file.Result.UserId) return Unauthorized();
+        if (currentUser.Id != file.Result.UserId && !await _userManager.IsInRoleAsync(currentUser, "Administrator")) 
+            return Unauthorized();
        
 
         try

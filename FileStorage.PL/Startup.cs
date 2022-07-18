@@ -2,12 +2,17 @@ using System.Text;
 using AutoMapper;
 using FileStorage.BLL;
 using FileStorage.BLL.Mapping;
+using FileStorage.BLL.Models.FileModels;
+using FileStorage.BLL.Models.UserModels;
 using FileStorage.BLL.Services;
 using FileStorage.BLL.Services.Interfaces;
 using FileStorage.BLL.Tokens;
+using FileStorage.BLL.Validation.File;
+using FileStorage.BLL.Validation.User;
 using FileStorage.DAL.Context;
 using FileStorage.DAL.Entities;
 using FileStorage.DAL.UnitOfWork;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -68,7 +73,14 @@ public class Startup
                     };
                 }
             );
-        
+        services.AddScoped<IValidator<UserRegisterModel>, UserRegisterModelValidator>();
+        services.AddScoped<IValidator<UserLoginModel>, UserLoginModelValidator>();
+        services.AddScoped<IValidator<UserEditModel>, UserEditModelValidator>();
+        services.AddScoped<IValidator<UserChangePasswordModel>, UserChangePasswordModelValidator>();
+
+        services.AddScoped<IValidator<FileCreateModel>, FileCreateModelValidator>();
+        services.AddScoped<IValidator<FileEditModel>, FileEditModelValidator>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IFileService, FileService>();
