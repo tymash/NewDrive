@@ -6,8 +6,19 @@ using File = FileStorage.DAL.Entities.File;
 
 namespace FileStorage.BLL.Mapping;
 
+/// <summary>
+
+/// The automapper profile class
+
+/// </summary>
+
+/// <seealso cref="Profile"/>
+
 public class AutomapperProfile : Profile
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AutomapperProfile"/> class
+    /// </summary>
     public AutomapperProfile()
     {
         CreateMap<User, UserViewModel>()

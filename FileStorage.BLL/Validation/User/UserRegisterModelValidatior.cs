@@ -3,8 +3,19 @@ using FluentValidation;
 
 namespace FileStorage.BLL.Validation.User;
 
+/// <summary>
+
+/// The user register model validator class
+
+/// </summary>
+
+/// <seealso cref="AbstractValidator{UserRegisterModel}"/>
+
 public class UserRegisterModelValidator : AbstractValidator<UserRegisterModel>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserRegisterModelValidator"/> class
+    /// </summary>
     public UserRegisterModelValidator()
     {
         RuleFor(um => um.Name).NotEmpty().Length(2, 30);

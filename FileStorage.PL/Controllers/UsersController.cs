@@ -9,19 +9,54 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FileStorage.PL.Controllers;
 
+/// <summary>
+
+/// The users controller class
+
+/// </summary>
+
+/// <seealso cref="ControllerBase"/>
+
 [Route("api/users")]
 [ApiController]
 public class UsersController : ControllerBase
 {
+    /// <summary>
+    /// The user service
+    /// </summary>
     private readonly IUserService _userService;
+    /// <summary>
+    /// The user manager
+    /// </summary>
     private readonly UserManager<User> _userManager;
     
+    /// <summary>
+    /// The register validator
+    /// </summary>
     private readonly IValidator<UserRegisterModel> _registerValidator;
+    /// <summary>
+    /// The login validator
+    /// </summary>
     private readonly IValidator<UserLoginModel> _loginValidator;
+    /// <summary>
+    /// The edit validator
+    /// </summary>
     private readonly IValidator<UserEditModel> _editValidator;
+    /// <summary>
+    /// The change password validator
+    /// </summary>
     private readonly IValidator<UserChangePasswordModel> _changePasswordValidator;
 
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UsersController"/> class
+    /// </summary>
+    /// <param name="userService">The user service</param>
+    /// <param name="userManager">The user manager</param>
+    /// <param name="registerValidator">The register validator</param>
+    /// <param name="loginValidator">The login validator</param>
+    /// <param name="editValidator">The edit validator</param>
+    /// <param name="changePasswordValidator">The change password validator</param>
     public UsersController(IUserService userService, UserManager<User> userManager, IValidator<UserRegisterModel> registerValidator, IValidator<UserLoginModel> loginValidator,
         IValidator<UserEditModel> editValidator, IValidator<UserChangePasswordModel> changePasswordValidator
     )
@@ -35,6 +70,10 @@ public class UsersController : ControllerBase
     }
 
     // GET: api/users
+    /// <summary>
+    /// Gets the all
+    /// </summary>
+    /// <returns>A task containing the action result</returns>
     [HttpGet]
     [Authorize(Roles = "Administrator")]
     public async Task<ActionResult> GetAll()
@@ -45,6 +84,11 @@ public class UsersController : ControllerBase
     }
 
     // GET: api/users/1
+    /// <summary>
+    /// Gets the by id using the specified user id
+    /// </summary>
+    /// <param name="userId">The user id</param>
+    /// <returns>A task containing the action result</returns>
     [HttpGet("{userId}")]
     [Authorize(Roles = "Administrator")]
     public async Task<ActionResult> GetById(string userId)
@@ -55,6 +99,10 @@ public class UsersController : ControllerBase
     }
     
     // GET: api/users/current
+    /// <summary>
+    /// Gets the current user
+    /// </summary>
+    /// <returns>A task containing the action result</returns>
     [HttpGet("current")]
     [Authorize]
     public async Task<ActionResult> GetCurrentUser()
@@ -66,6 +114,11 @@ public class UsersController : ControllerBase
     }
 
     // POST: api/users/register
+    /// <summary>
+    /// Registers the user model
+    /// </summary>
+    /// <param name="userModel">The user model</param>
+    /// <returns>A task containing the action result</returns>
     [HttpPost("register")]
     [AllowAnonymous]
     public async Task<ActionResult> Register([FromBody] UserRegisterModel userModel)
@@ -78,6 +131,11 @@ public class UsersController : ControllerBase
     }
 
     // POST: api/users/login
+    /// <summary>
+    /// Logins the user model
+    /// </summary>
+    /// <param name="userModel">The user model</param>
+    /// <returns>A task containing the action result</returns>
     [HttpPost("login")]
     [AllowAnonymous]
     public async Task<ActionResult> Login([FromBody] UserLoginModel userModel)
@@ -90,6 +148,10 @@ public class UsersController : ControllerBase
     }
 
     // POST: api/users/logout
+    /// <summary>
+    /// Logouts this instance
+    /// </summary>
+    /// <returns>A task containing the action result</returns>
     [HttpPost("logout")]
     [Authorize]
     public async Task<ActionResult> Logout()
@@ -100,6 +162,12 @@ public class UsersController : ControllerBase
     }
 
     // PUT: api/users/edit/1
+    /// <summary>
+    /// Changes the user data using the specified user id
+    /// </summary>
+    /// <param name="userId">The user id</param>
+    /// <param name="userModel">The user model</param>
+    /// <returns>A task containing the action result</returns>
     [HttpPut("edit/{userId}")]
     [Authorize]
     public async Task<ActionResult> ChangeUserData(string userId, [FromBody] UserEditModel userModel)
@@ -118,6 +186,11 @@ public class UsersController : ControllerBase
     }
 
     // PUT: api/users/change-password/
+    /// <summary>
+    /// Changes the user password using the specified user model
+    /// </summary>
+    /// <param name="userModel">The user model</param>
+    /// <returns>A task containing the action result</returns>
     [HttpPut("change-password/")]
     [Authorize]
     public async Task<ActionResult> ChangeUserPassword([FromBody] UserChangePasswordModel userModel)

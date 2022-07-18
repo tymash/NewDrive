@@ -3,8 +3,19 @@ using FluentValidation;
 
 namespace FileStorage.BLL.Validation.User;
 
+/// <summary>
+
+/// The user edit model validator class
+
+/// </summary>
+
+/// <seealso cref="AbstractValidator{UserEditModel}"/>
+
 public class UserEditModelValidator : AbstractValidator<UserEditModel>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserEditModelValidator"/> class
+    /// </summary>
     public UserEditModelValidator()
     {
         RuleFor(um => um.Id).NotEmpty();

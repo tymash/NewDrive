@@ -4,23 +4,53 @@ using FileStorage.DAL.Repositories.Interfaces;
 
 namespace FileStorage.DAL.UnitOfWork;
 
+/// <summary>
+
+/// The unit of work class
+
+/// </summary>
+
+/// <seealso cref="IUnitOfWork"/>
+
 public class UnitOfWork : IUnitOfWork
 {
+    /// <summary>
+    /// The context
+    /// </summary>
     private readonly AppDbContext _context;
+    /// <summary>
+    /// The users repository
+    /// </summary>
     private IUsersRepository? _usersRepository;
+    /// <summary>
+    /// The files repository
+    /// </summary>
     private IFilesRepository? _filesRepository;
+    /// <summary>
+    /// The file storage repository
+    /// </summary>
     private IFileStorageRepository? _fileStorageRepository;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UnitOfWork"/> class
+    /// </summary>
     public UnitOfWork()
     {
         _context = new AppDbContext();
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UnitOfWork"/> class
+    /// </summary>
+    /// <param name="context">The context</param>
     public UnitOfWork(AppDbContext context)
     {
         _context = context;
     }
 
+    /// <summary>
+    /// Gets the value of the users repository
+    /// </summary>
     public IUsersRepository UsersRepository
     {
         get
@@ -30,6 +60,9 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    /// <summary>
+    /// Gets the value of the files repository
+    /// </summary>
     public IFilesRepository FilesRepository
     {
         get
@@ -39,6 +72,9 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    /// <summary>
+    /// Gets the value of the file storage repository
+    /// </summary>
     public IFileStorageRepository FileStorageRepository
     {
         get
@@ -48,6 +84,9 @@ public class UnitOfWork : IUnitOfWork
         }
     }
 
+    /// <summary>
+    /// Saves this instance
+    /// </summary>
     public async Task SaveAsync()
     {
         await _context.SaveChangesAsync();

@@ -6,8 +6,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FileStorage.BLL;
 
+/// <summary>
+
+/// The seed db initializer class
+
+/// </summary>
+
 public static class SeedDbInitializer
 {
+    /// <summary>
+    /// Seeds the roles using the specified role manager
+    /// </summary>
+    /// <param name="roleManager">The role manager</param>
     public static void SeedRoles(RoleManager<IdentityRole> roleManager)
     {
         if (!roleManager.RoleExistsAsync("User").Result)
@@ -16,6 +26,10 @@ public static class SeedDbInitializer
         if (!roleManager.RoleExistsAsync("Administrator").Result)
             roleManager.CreateAsync(new IdentityRole("Administrator")).Wait();
     }
+    /// <summary>
+    /// Seeds the users using the specified user manager
+    /// </summary>
+    /// <param name="userManager">The user manager</param>
     public static void SeedUsers(UserManager<User> userManager)
     {
         const string mainAdminEmail = "tymash@email.com";

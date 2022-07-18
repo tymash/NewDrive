@@ -8,8 +8,24 @@ using File = System.IO.File;
 
 namespace FileStorage.DAL.Repositories;
 
+/// <summary>
+
+/// The storage repository class
+
+/// </summary>
+
+/// <seealso cref="IFileStorageRepository"/>
+
 public class StorageRepository : IFileStorageRepository
 {
+    /// <summary>
+    /// Creates the file using the specified path
+    /// </summary>
+    /// <param name="path">The path</param>
+    /// <param name="streamedFileContent">The streamed file content</param>
+    /// <exception cref="UnauthorizedAccessException"></exception>
+    /// <exception cref="UnauthorizedAccessException">File has been already exists.</exception>
+    /// <exception cref="UnauthorizedAccessException">Path must not be null</exception>
     public async Task CreateFileAsync(string path, byte[] streamedFileContent)
     {
         if (path == null)
@@ -29,6 +45,13 @@ public class StorageRepository : IFileStorageRepository
         }
     }
 
+    /// <summary>
+    /// Reads the file using the specified path
+    /// </summary>
+    /// <param name="path">The path</param>
+    /// <exception cref="FileNotFoundException">Current file does not exists</exception>
+    /// <exception cref="UnauthorizedAccessException">Path must not be null</exception>
+    /// <returns>The memory stream</returns>
     public async Task<MemoryStream> ReadFileAsync(string path)
     {
         if (path == null)
@@ -47,6 +70,12 @@ public class StorageRepository : IFileStorageRepository
         return memoryStream;
     }
 
+    /// <summary>
+    /// Deletes the file using the specified path
+    /// </summary>
+    /// <param name="path">The path</param>
+    /// <exception cref="ArgumentException">Current file does not exists.</exception>
+    /// <exception cref="ArgumentException">Path must not be null</exception>
     public void DeleteFile(string path)
     {
         if (path == null)
@@ -58,6 +87,15 @@ public class StorageRepository : IFileStorageRepository
         File.Delete(path);
     }
 
+    /// <summary>
+    /// Processes the form file using the specified form file
+    /// </summary>
+    /// <param name="formFile">The form file</param>
+    /// <param name="sizeLimit">The size limit</param>
+    /// <exception cref="InsufficientMemoryException">File: {name} exceeds {sizeLimit / 1048576:N1} MB.</exception>
+    /// <exception cref="EndOfStreamException">File: {name} is empty from MemoryStream.</exception>
+    /// <exception cref="FileNotFoundException">FormFile is empty.</exception>
+    /// <returns>A task containing the byte array</returns>
     public async Task<byte[]> ProcessFormFileAsync(IFormFile formFile, long sizeLimit)
     {
         var name = WebUtility.HtmlEncode(formFile.FileName);
@@ -79,6 +117,12 @@ public class StorageRepository : IFileStorageRepository
         }
     }
 
+    /// <summary>
+    /// Creates the file item form file using the specified form file
+    /// </summary>
+    /// <param name="formFile">The form file</param>
+    /// <param name="userId">The user id</param>
+    /// <returns>The file item</returns>
     public StorageFile CreateFileItemFormFile(IFormFile formFile, string userId)
     {
         var fileItem = new StorageFile

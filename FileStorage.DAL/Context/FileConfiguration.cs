@@ -5,8 +5,20 @@ using File = FileStorage.DAL.Entities.File;
 
 namespace FileStorage.DAL.Context;
 
+/// <summary>
+
+/// The file configuration class
+
+/// </summary>
+
+/// <seealso cref="IEntityTypeConfiguration{File}"/>
+
 public class FileConfiguration : IEntityTypeConfiguration<File>
 {
+    /// <summary>
+    /// Configures the builder
+    /// </summary>
+    /// <param name="builder">The builder</param>
     public void Configure(EntityTypeBuilder<File> builder)
     {
         builder.HasKey(file => file.Id);

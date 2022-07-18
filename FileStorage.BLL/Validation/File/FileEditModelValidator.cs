@@ -3,8 +3,19 @@ using FluentValidation;
 
 namespace FileStorage.BLL.Validation.File;
 
+/// <summary>
+
+/// The file edit model validator class
+
+/// </summary>
+
+/// <seealso cref="AbstractValidator{FileEditModel}"/>
+
 public class FileEditModelValidator : AbstractValidator<FileEditModel>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FileEditModelValidator"/> class
+    /// </summary>
     public FileEditModelValidator()
     {
         RuleFor(f => f.Id).NotEmpty();

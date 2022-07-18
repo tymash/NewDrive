@@ -10,31 +10,71 @@ using Microsoft.AspNetCore.StaticFiles;
 
 namespace FileStorage.BLL.Services;
 
+/// <summary>
+
+/// The file service class
+
+/// </summary>
+
+/// <seealso cref="IFileService"/>
+
 public class FileService : IFileService
 {
+    /// <summary>
+    /// The unit of work
+    /// </summary>
     private readonly IUnitOfWork _unitOfWork;
+    /// <summary>
+    /// The mapper profile
+    /// </summary>
     private readonly IMapper _mapperProfile;
+    /// <summary>
+    /// The get current directory
+    /// </summary>
     private readonly string _targetPath = Directory.GetParent(Directory.GetCurrentDirectory()) + "/FileStorage.DAL/Storage/";
+    /// <summary>
+    /// The file size limit
+    /// </summary>
     private const long FileSizeLimit = 500000000;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FileService"/> class
+    /// </summary>
+    /// <param name="unitOfWork">The unit of work</param>
+    /// <param name="mapperProfile">The mapper profile</param>
     public FileService(IUnitOfWork unitOfWork, IMapper mapperProfile)
     {
         _unitOfWork = unitOfWork;
         _mapperProfile = mapperProfile;
     }
 
+    /// <summary>
+    /// Gets the all
+    /// </summary>
+    /// <returns>A task containing an enumerable of file view model</returns>
     public async Task<IEnumerable<FileViewModel>> GetAllAsync()
     {
         var files = await _unitOfWork.FilesRepository.GetAllAsync();
         return _mapperProfile.Map<IEnumerable<FileViewModel>>(files);
     }
 
+    /// <summary>
+    /// Gets the by id using the specified id
+    /// </summary>
+    /// <param name="id">The id</param>
+    /// <returns>A task containing the file view model</returns>
     public async Task<FileViewModel> GetByIdAsync(int id)
     {
         var file = await _unitOfWork.FilesRepository.GetByIdAsync(id);
         return _mapperProfile.Map<FileViewModel>(file);
     }
 
+    /// <summary>
+    /// Uploads the user id
+    /// </summary>
+    /// <param name="userId">The user id</param>
+    /// <param name="file">The file</param>
+    /// <returns>The file dto</returns>
     public async Task<FileViewModel> UploadAsync(string userId, IFormFile file)
     {
         var formFileContent = await _unitOfWork.FileStorageRepository.ProcessFormFileAsync(file, FileSizeLimit);
@@ -57,6 +97,12 @@ public class FileService : IFileService
         return fileDto;
     }
     
+    /// <summary>
+    /// Downloads the file id
+    /// </summary>
+    /// <param name="fileId">The file id</param>
+    /// <exception cref="FileStorageException">File for current user does not exist.</exception>
+    /// <returns>A task containing the memory stream stream string content type string file name</returns>
     public async Task<(MemoryStream stream, string contentType, string fileName)> DownloadAsync(int fileId)
     {
         var file = await _unitOfWork.FilesRepository.GetByIdAsync(fileId);
@@ -72,6 +118,11 @@ public class FileService : IFileService
         return (stream, contentType, file.Name)!;
     }
 
+    /// <summary>
+    /// Updates the model
+    /// </summary>
+    /// <param name="model">The model</param>
+    /// <exception cref="FileStorageException">No such item found</exception>
     public async Task UpdateAsync(FileEditModel model)
     {
         if (model == null)
@@ -88,6 +139,10 @@ public class FileService : IFileService
         await _unitOfWork.SaveAsync();
     }
 
+    /// <summary>
+    /// Deletes the id
+    /// </summary>
+    /// <param name="id">The id</param>
     public async Task DeleteAsync(int id)
     {
         var file = await _unitOfWork.FilesRepository.GetByIdAsync(id);
@@ -95,6 +150,11 @@ public class FileService : IFileService
         _unitOfWork.FileStorageRepository.DeleteFile(_targetPath + file.UserId + file.Path);
     }
 
+    /// <summary>
+    /// Gets the by filter using the specified model
+    /// </summary>
+    /// <param name="model">The model</param>
+    /// <returns>A task containing an enumerable of file view model</returns>
     public async Task<IEnumerable<FileViewModel>> GetByFilterAsync(FilterModel model)
     {
         var files = await _unitOfWork.FilesRepository.GetAllAsync();
@@ -142,6 +202,11 @@ public class FileService : IFileService
         return _mapperProfile.Map<IEnumerable<FileViewModel>>(files);
     }
 
+    /// <summary>
+    /// Gets the by user using the specified user id
+    /// </summary>
+    /// <param name="userId">The user id</param>
+    /// <returns>The items</returns>
     public async Task<IEnumerable<FileViewModel>> GetByUserAsync(string userId)
     {
         var items = await GetAllAsync();
@@ -149,6 +214,10 @@ public class FileService : IFileService
         return items;
     }
     
+    /// <summary>
+    /// Moves the file recycle bin using the specified file id
+    /// </summary>
+    /// <param name="fileId">The file id</param>
     public async Task MoveFileRecycleBinAsync(int fileId)
     {
         var file = await _unitOfWork.FilesRepository.GetByIdAsync(fileId);
@@ -159,6 +228,10 @@ public class FileService : IFileService
         await UpdateAsync(editModel);
     }
 
+    /// <summary>
+    /// Restores the recycled file using the specified file id
+    /// </summary>
+    /// <param name="fileId">The file id</param>
     public async Task RestoreRecycledFileAsync(int fileId)
     {
         var file = await _unitOfWork.FilesRepository.GetByIdAsync(fileId);
@@ -168,6 +241,10 @@ public class FileService : IFileService
         await UpdateAsync(editModel);
     }
 
+    /// <summary>
+    /// Changes the file visibility using the specified file id
+    /// </summary>
+    /// <param name="fileId">The file id</param>
     public async Task ChangeFileVisibilityAsync(int fileId)
     {
         var file = await _unitOfWork.FilesRepository.GetByIdAsync(fileId);
@@ -177,6 +254,13 @@ public class FileService : IFileService
         await UpdateAsync(editModel);
     }
 
+    /// <summary>
+    /// Gets the by file name using the specified file name
+    /// </summary>
+    /// <param name="fileName">The file name</param>
+    /// <param name="userId">The user id</param>
+    /// <exception cref="FileStorageException">No such file</exception>
+    /// <returns>A task containing the file view model</returns>
     public async Task<FileViewModel> GetByFileName(string fileName, string userId)
     {
         var files = await GetByUserAsync(userId);

@@ -11,16 +11,43 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FileStorage.PL.Controllers;
 
+/// <summary>
+
+/// The files controller class
+
+/// </summary>
+
+/// <seealso cref="ControllerBase"/>
+
 [Route("api/items")]
 [ApiController]
 public class FilesController : ControllerBase
 {
+    /// <summary>
+    /// The file service
+    /// </summary>
     private readonly IFileService _fileService;
+    /// <summary>
+    /// The user manager
+    /// </summary>
     private readonly UserManager<User> _userManager;
     
+    /// <summary>
+    /// The create validator
+    /// </summary>
     private readonly IValidator<FileCreateModel> _createValidator;
+    /// <summary>
+    /// The edit validator
+    /// </summary>
     private readonly IValidator<FileEditModel> _editValidator;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FilesController"/> class
+    /// </summary>
+    /// <param name="fileService">The file service</param>
+    /// <param name="userManager">The user manager</param>
+    /// <param name="createValidator">The create validator</param>
+    /// <param name="editValidator">The edit validator</param>
     public FilesController(IFileService fileService, UserManager<User> userManager, 
         IValidator<FileCreateModel> createValidator, IValidator<FileEditModel> editValidator)
     {
@@ -31,6 +58,11 @@ public class FilesController : ControllerBase
     }
     
     // GET: api/items
+    /// <summary>
+    /// Gets the by filter using the specified filter model
+    /// </summary>
+    /// <param name="filterModel">The filter model</param>
+    /// <returns>A task containing an action result of i enumerable file view model</returns>
     [HttpGet]
     [Authorize]
     public async Task<ActionResult<IEnumerable<FileViewModel>>> GetByFilter([FromQuery] FilterModel filterModel)
@@ -41,6 +73,11 @@ public class FilesController : ControllerBase
     }
     
     // GET: api/items
+    /// <summary>
+    /// Gets the user files by filter using the specified filter model
+    /// </summary>
+    /// <param name="filterModel">The filter model</param>
+    /// <returns>A task containing an action result of i enumerable file view model</returns>
     [HttpGet("user")]
     [Authorize]
     public async Task<ActionResult<IEnumerable<FileViewModel>>> GetUserFilesByFilter([FromQuery] FilterModel filterModel)
@@ -53,6 +90,11 @@ public class FilesController : ControllerBase
     }
 
     // GET: api/items/1
+    /// <summary>
+    /// Gets the by id using the specified id
+    /// </summary>
+    /// <param name="id">The id</param>
+    /// <returns>A task containing an action result of i enumerable file view model</returns>
     [HttpGet("{id}")]
     [Authorize(Roles = "Administrator")]
     public async Task<ActionResult<IEnumerable<FileViewModel>>> GetById(int id)
@@ -63,6 +105,10 @@ public class FilesController : ControllerBase
     }
 
     // POST: api/items/upload
+    /// <summary>
+    /// Uploads this instance
+    /// </summary>
+    /// <returns>A task containing the action result</returns>
     [HttpPost("upload")]
     [RequestSizeLimit(500_000_000)]
     [Authorize]
@@ -81,6 +127,11 @@ public class FilesController : ControllerBase
         return Ok(filesModels);
     }
     
+    /// <summary>
+    /// Downloads the file id
+    /// </summary>
+    /// <param name="fileId">The file id</param>
+    /// <returns>A task containing the action result</returns>
     [HttpGet("download/{fileId}"), DisableRequestSizeLimit]
     [Authorize]
     public async Task<IActionResult> Download(int fileId)
@@ -97,6 +148,11 @@ public class FilesController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Publics the download using the specified file id
+    /// </summary>
+    /// <param name="fileId">The file id</param>
+    /// <returns>A task containing the action result</returns>
     [HttpGet("download/shared/{fileId}"), DisableRequestSizeLimit]
     public async Task<IActionResult> PublicDownload(int fileId)
     {
@@ -115,6 +171,12 @@ public class FilesController : ControllerBase
     }
     
     // PUT: api/items/edit/1
+    /// <summary>
+    /// Edits the item id
+    /// </summary>
+    /// <param name="itemId">The item id</param>
+    /// <param name="fileModel">The file model</param>
+    /// <returns>A task containing the action result</returns>
     [HttpPut("edit/{itemId}")]
     [Authorize]
     public async Task<ActionResult> Edit(int itemId, [FromBody] FileEditModel fileModel)
@@ -133,6 +195,11 @@ public class FilesController : ControllerBase
     }
     
     // POST: api/items/delete/1
+    /// <summary>
+    /// Deletes the file id
+    /// </summary>
+    /// <param name="fileId">The file id</param>
+    /// <returns>A task containing the action result</returns>
     [HttpDelete("delete/{fileId}")]
     [Authorize]
     public async Task<ActionResult> Delete(int fileId)
@@ -147,6 +214,11 @@ public class FilesController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Moves the to recycle bin using the specified file id
+    /// </summary>
+    /// <param name="fileId">The file id</param>
+    /// <returns>A task containing the action result</returns>
     [Authorize]
     [HttpPut("{fileId}/recycle")]
     public async Task<IActionResult> MoveToRecycleBinAsync(int fileId)
@@ -168,6 +240,11 @@ public class FilesController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Restores the file using the specified file id
+    /// </summary>
+    /// <param name="fileId">The file id</param>
+    /// <returns>A task containing the action result</returns>
     [Authorize]
     [HttpPut("{fileId}/restore")]
     public async Task<IActionResult> RestoreFileAsync(int fileId)
@@ -189,6 +266,11 @@ public class FilesController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Changes the visibility using the specified file id
+    /// </summary>
+    /// <param name="fileId">The file id</param>
+    /// <returns>A task containing the action result</returns>
     [Authorize]
     [HttpPut("{fileId}/changePublic")]
     public async Task<IActionResult> ChangeVisibilityAsync(int fileId)
