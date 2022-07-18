@@ -100,7 +100,7 @@ public class FileService : IFileService
         var files = await _unitOfWork.FilesRepository.GetAllAsync();
         if (model.Name != null)
         {
-            files = files.Where(file => file.Name.Contains(model.Name));
+            files = files.Where(file => file.Name.ToLower().Contains(model.Name.ToLower()));
         }
         
         if (model.IsRecycled != null)
