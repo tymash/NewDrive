@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { UserViewModel } from '../models/user.model';
 import { UserService } from '../services/user.service';
@@ -13,9 +14,10 @@ export class ModerateUsersComponent implements OnInit {
   bsModalRef?: BsModalRef;
 
   constructor(private userService: UserService,
-    private modalService: BsModalService) { }
+    private modalService: BsModalService, private router: Router) { }
 
   ngOnInit() {
+    if (this.userService.getAuthenticatedUserRole() != "Administrator") this.router.navigate(['']);
     this.getUsers();
   }
 

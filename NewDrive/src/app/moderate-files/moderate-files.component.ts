@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { FileViewModel, FileEditModel } from '../models/file.model';
 import { FilterModel } from '../models/filter.model';
@@ -20,9 +21,10 @@ export class ModerateFilesComponent implements OnInit {
   users?: UserViewModel[];
 
   constructor(private fileService: FileService, private modalService: BsModalService,
-    private userService: UserService) { }
+    private userService: UserService, private router: Router) { }
 
   ngOnInit() {
+    if (this.userService.getAuthenticatedUserRole() != "Administrator") this.router.navigate(['']);
     this.filter = {
       name: "",
       dateSort: 0,
@@ -55,7 +57,7 @@ export class ModerateFilesComponent implements OnInit {
 
   openModal(template: TemplateRef<any>, file: FileEditModel) {
     this.selectedFile = file;
-    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+    this.modalRef = this.modalService.show(template, { class: 'modal-dialog-centered' });
   }
 
   confirmRecycling(): void {
@@ -109,6 +111,7 @@ export class ModerateFilesComponent implements OnInit {
     this.restoreItem(this.selectedFile!.id);
     this.selectedFile = undefined;
     this.modalRef.hide();
+    window.location.reload();
   }
 
   private restoreItem(id: number) {
@@ -118,12 +121,6 @@ export class ModerateFilesComponent implements OnInit {
       },
       error: (error) => console.log(error)}
     );
-  }
-
-  confirmRecycle(): void {
-    this.moveToRecycleBin(this.selectedFile!.id);
-    this.selectedFile = undefined;
-    this.modalRef.hide();
   }
 
   private moveToRecycleBin(id: number) {
@@ -140,6 +137,7 @@ export class ModerateFilesComponent implements OnInit {
     this.deleteItem(this.selectedFile!.id);
     this.selectedFile = undefined;
     this.modalRef.hide();
+    window.location.reload();
   }
 
   private deleteItem(id: number) {
