@@ -45,11 +45,11 @@
         <td><a routerLink="../profile/{{item.user.id}}">{{item.user.email}}</a></td>
         <td>{{item.createdOn | date: 'medium'}}</td>
         <td class="actions">
-          <button [hidden]="!item.isPublic" class="btn bg-info" 
+          <button [hidden]="item.isPublic" class="btn bg-info" 
           (click)="openModal(toChangeVis, item)" title="Make public">
             <i class="fa fa-share-alt" aria-hidden="true"></i>
           </button>
-          <button [hidden]="item.isPublic" class="btn bg-warning"
+          <button [hidden]="!item.isPublic" class="btn bg-warning"
             (click)="openModal(toChangeVis, item)" title="Make private">
             <i class="fa fa-user-secret" aria-hidden="true"></i>
           </button>
@@ -74,7 +74,8 @@
 
 <ng-template #toChangeVis>
   <div class="modal-body text-center">
-    <p>Do you want to <strong>Change visibility</strong> this item?</p>
+    <p>Do you want to make this file
+      <strong>{{ selectedFile!.isPublic ? 'Private' : 'Public' }}</strong>?</p>
     <button type="button" class="btn btn-default" (click)="confirmVisChange()">Yes</button>
     <button type="button" class="btn btn-primary" (click)="decline()">No</button>
   </div>
@@ -82,15 +83,15 @@
 
 <ng-template #toRecycleBinTemplate>
   <div class="modal-body text-center">
-    <p>Do you want to <strong>move to Recycle bin</strong> this item?</p>
-    <button type="button" class="btn btn-default" (click)="confirmRecycle()">Yes</button>
+    <p>Do you want to move this file to the <strong>Recycle bin</strong>?</p>
+    <button type="button" class="btn btn-default" (click)="confirmRecycling()">Yes</button>
     <button type="button" class="btn btn-primary" (click)="decline()">No</button>
   </div>
 </ng-template>
 
 <ng-template #restoreTemplate>
   <div class="modal-body text-center">
-    <p>Do you want to <strong>Restore</strong> this item?</p>
+    <p>Do you want to <strong>Restore</strong> this file?</p>
     <button type="button" class="btn btn-default" (click)="confirmRestore()">Yes</button>
     <button type="button" class="btn btn-primary" (click)="decline()">No</button>
   </div>
@@ -98,7 +99,7 @@
 
 <ng-template #deleteTemplate>
   <div class="modal-body text-center">
-    <p>Do you want to <strong>Delete</strong> this item?</p>
+    <p>Do you want to <strong>Delete</strong> this file?</p>
     <button type="button" class="btn btn-default" (click)="confirmDelete()">Yes</button>
     <button type="button" class="btn btn-primary" (click)="decline()">No</button>
   </div>
