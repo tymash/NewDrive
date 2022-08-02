@@ -54,7 +54,7 @@ export class FilesComponent implements OnInit {
 
   openModal(template: TemplateRef<any>, file: FileEditModel) {
     this.selectedFile = file;
-    this.modalRef = this.modalService.show(template, { class: 'modal-sm' });
+    this.modalRef = this.modalService.show(template, { class: 'modal-dialog-centered' });
   }
 
   confirmRecycling(): void {
