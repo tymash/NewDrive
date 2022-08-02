@@ -33,9 +33,9 @@
       <input class="form-control" [(ngModel)]="repeatPassword" type="password" name="repeatPassword" minlength="6"
         maxlength="16" required #repeatPass="ngModel">
     </div>
-    <p *ngIf="isSuccess" class="form-success">Password has been successfully updated</p>
-    <p *ngIf="isError" class="form-error">Incorrect password for changing</p>
-    <p *ngIf="isPasswordError" class="form-error">Passwords don't match</p>
+    <p *ngIf="isPasswordSuccess" class="form-success">Password has been successfully updated</p>
+    <p *ngIf="isPasswordError" class="form-error">Incorrect password for changing</p>
+    <p *ngIf="isRepeatError" class="form-error">Passwords don't match</p>
     <button class="btn btn-primary w-75" (click)="changePassword(newPass.valid && repeatPass.valid)">
       Change password
     </button>
