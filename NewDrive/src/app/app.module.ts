@@ -32,6 +32,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ModerateFilesComponent } from './moderate-files/moderate-files.component';
 import { ModerateUsersComponent } from './moderate-users/moderate-users.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { FooterComponent } from './footer/footer.component';
 
 export function getToken() {
   return sessionStorage.getItem('token');
@@ -54,7 +55,8 @@ export function getToken() {
     ProfileComponent,
     ModerateFilesComponent,
     ModerateUsersComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
